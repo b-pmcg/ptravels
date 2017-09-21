@@ -23,8 +23,7 @@ export default class PtravelsMap extends Component {
       /*Should this be its own function?*/
       let self = this;
       fetch(`/usershows/${nameValue}`)  
-      .then(  
-        function(response) {  
+      .then(response => {  
         if (response.status !== 200) {  
           console.log('Looks like there was a problem. Status Code: ' +  
           response.status);  
