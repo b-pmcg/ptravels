@@ -53,7 +53,10 @@ module.exports = {
                 json: true
             };
             let apiResponse = await rp(options);
-            if (apiResponse.status == 'ZERO_RESULTS') => console.log(`No results found for: ${showString}`)
+            if (apiResponse.status != 'OK') {
+                console.log(`Error parsing response for "${showString}": ${apiResponse.status}`);
+                return;
+            } 
             return apiResponse;
         } catch (err) {
             console.log("insidecatch");

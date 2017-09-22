@@ -60,6 +60,10 @@ app.get('/usershows/:username', async (req, res) => {
   let pnetData =  await gateway.getShowsByUsername(username);
   let showString = utilities.getMostRecentShowString(pnetData);
   let geoData = await gateway.getGeoData(showString);
+  if (!geoData) {
+    console.log("Handle this error better (server.js)");
+    return; // Clean this up somehow
+  }
   let coords = utilities.getCoordsFromGeoData(geoData);
   res.write(JSON.stringify(coords));
   res.end();
