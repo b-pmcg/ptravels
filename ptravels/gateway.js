@@ -4,65 +4,27 @@
 const rp = require('request-promise');
 const config = require('./config');
 const P = config.pnetConfig;
-let container;
 
 module.exports = {
-    getGeoData: async showString => {
+    // Phishnet APIv3
+    getVenueByVenueId: async venueid => {
         try {
             const options = {
-                uri: `https://maps.googleapis.com/maps/api/geocode/json?address=${showString}&key=AIzaSyDMgPjBslgKeL2jO0jxIiaVOKgRCM_TFNk`,
+                uri: `https://api.phish.net/v3/venues/get?apikey=${P.apikey}&venueid=${venueid}`,
                 headers: {
                     'User-Agent': 'Request-Promise'
                 },
                 json: true
             };
             let apiResponse = await rp(options);
+            console.log(`venuestuff: ${apiResponse}`);
             return apiResponse;
         } catch (err) {
             console.log("insidecatch");
             console.log(err);
-        };    
-    },
-    testRequest: async() => {
-        try {
-            const options = {
-                //uri: `${P.baseUrl}${methodPath}?apikey=${P.apikey}${query}`,
-                uri: 'https://api.phish.net/v3/venues/all?apikey=714E5526D579DF266C5D',
-                headers: {
-                    'User-Agent': 'Request-Promise'
-                },
-                json: true
-            };
-            let apiResponse = await rp(options);
-            console.log(apiResponse.response.data);
-            return apiResponse.response.data;
-
-        } catch (err) {
-            console.log("inside node err catch");
-            console.log(err);
         };
-
     },
-    makeRequest: async(methodPath, ...query) => {
-        try {
-            const options = {
-                uri: `${P.baseUrl}${methodPath}?apikey=${P.apikey}${query}`,
-                //uri: 'https://api.phish.net/v3/venues/all?apikey=714E5526D579DF266C5D',
-                headers: {
-                    'User-Agent': 'Request-Promise'
-                },
-                json: true
-            };
-            let apiResponse = await rp(options);
-            //console.log(apiResponse.response.data);
-            return apiResponse.response.data;
-
-        } catch (err) {
-            console.log("inside node err catch");
-            console.log(err);
-        };
-
-    },
+    // Phishnet APIv2
     getShowsByUsername: async username => {
         try {
             const options = {
@@ -79,6 +41,24 @@ module.exports = {
             console.log("insidecatch");
             console.log(err);
         };
+    },
+    // Google API
+    getGeoData: async showString => {
+        try {
+            const options = {
+                uri: `https://maps.googleapis.com/maps/api/geocode/json?address=${showString}&key=AIzaSyDMgPjBslgKeL2jO0jxIiaVOKgRCM_TFNk`,
+                headers: {
+                    'User-Agent': 'Request-Promise'
+                },
+                json: true
+            };
+            let apiResponse = await rp(options);
+            if (apiResponse.status == 'ZERO_RESULTS') => console.log(`No results found for: ${showString}`)
+            return apiResponse;
+        } catch (err) {
+            console.log("insidecatch");
+            console.log(err);
+        };    
     }
 };
 

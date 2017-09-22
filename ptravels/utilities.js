@@ -1,6 +1,7 @@
 /* jshint node: true, esversion: 6 */
 /* jshint ignore:start */
 
+
 module.exports = {
     getMostRecentShowString: phishnetApiResponse => {
         let venuename = phishnetApiResponse[0].venuename;

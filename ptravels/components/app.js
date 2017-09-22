@@ -1,10 +1,6 @@
 import Leaflet from 'leaflet';
 import React from 'react';
-
-import SimpleExample from './simple';
-import ContainerTest from './container-test';
 import PtravelsMap from './ptravels-map';
-//import SingleInput from './single-input';
 
 /*Main react app*/
 

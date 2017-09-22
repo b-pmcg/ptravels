@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Map, LayersControl, Marker, Popup, TileLayer, ZoomControl} from 'react-leaflet';
 import Control from 'react-leaflet-control';
-import NameForm from './single-input';
+import NameForm from './name-form';
+import MarkerInfo from './marker-info';
 const { BaseLayer, Overlay } = LayersControl;
 
 /*This is a container component that combines the
@@ -14,40 +15,34 @@ export default class PtravelsMap extends Component {
           lat: 39.209425,
           lng: -76.86181599999999,
           zoom: 13,
-          name: ''
+          message: "Enter your name to see your first show."
         };
       }
 
     getNameValue = (nameValue) => {
-      console.log("I got the name! " + nameValue);
-      /*Should this be its own function?*/
-      let self = this;
-      fetch(`/usershows/${nameValue}`)  
-      .then(response => {  
-        if (response.status !== 200) {  
-          console.log('Looks like there was a problem. Status Code: ' +  
-          response.status);  
-          return;  
-        }
-        // Examine the text in the response  
-        response.json().then(function(data) {  
-          //var mostRecentShow = data.pop;
-          console.log(data); 
-          console.log("someeee")
-          //self.setState({something: [JSON.stringify(data)]});
-          self.setState({lat: data.lat, lng: data.lng});
-        });  
-        }  
-      )  
-      .catch(function(err) {  
-        console.log('Fetch Error :-S', err);  
-      });
+        let self = this; // <-- How to avoid?
+        fetch(`/usershows/${nameValue}`)
+          .then(response => {  
+          if (response.status !== 200) {  
+              console.log('Looks like there was a problem. Status Code: ' + response.status);  
+              return;  
+          }
+          response.json().then(data => {  
+              console.log(data); 
+              self.setState({lat: data.lat, lng: data.lng, message: nameValue});
+          })  
+          })
+          .then( () => {
+            //now fetch all venues
+          })
+          .catch(err => console.log('Fetch Error :-S', err)) //is this error handling implemented correctly?
     }
   
     render() {
         const position = [this.state.lat, this.state.lng]
         const center = [51.505, -0.09];
         const rectangle = [[51.49, -0.08], [51.5, -0.06]];
+        const message = [this.state.message];
 
     return (
       <Map center={position} zoom={this.state.zoom}>
@@ -62,9 +57,7 @@ export default class PtravelsMap extends Component {
       </Control>
       <Marker position={position}>
           <Popup>
-            <span>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </span>
+            <MarkerInfo message={message}/>
           </Popup>
         </Marker>
     </Map>

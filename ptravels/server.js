@@ -39,7 +39,7 @@ app.use(webpackDevMiddleware(compiler, {
     stats: {colors: true}
   }));
 
-app.listen(port, function () {
+app.listen(port, () => {
     console.log(`Express server running on port: ${port}`);
   });
 
@@ -53,19 +53,28 @@ app.listen(port, function () {
 // res.end();
 // });
 
-app.get('/usershows/:username', async function(req, res) {
+app.get('/usershows/:username', async (req, res) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
   let username = req.params.username;
-  console.log("server got this username: " + username);
   let pnetData =  await gateway.getShowsByUsername(username);
   let showString = utilities.getMostRecentShowString(pnetData);
   let geoData = await gateway.getGeoData(showString);
   let coords = utilities.getCoordsFromGeoData(geoData);
-  console.log("coords sendingback these coords:" + coords);
-  //res.json({ message: 'hello' });
   res.write(JSON.stringify(coords));
   res.end();
+});
+
+app.get('/venueshows/:venue', async (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+  let venueName = req.params.venue;
+  let allVenueShows = gateway.getVenueByVenueId(venueName);
+  // get shows by venueid
+
+  res.write(JSON.stringify(coords));
+  res.end();
+
 })
   
   //END ROUTES
