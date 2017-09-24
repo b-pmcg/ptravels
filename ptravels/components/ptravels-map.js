@@ -16,22 +16,22 @@ const utilities = require('../utilities');
 const Api = new ClientApi();
 
 export default class PtravelsMap extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             lat: 39.209425,
             lng: -76.86181599999999,
             zoom: 13,
-            message: "Enter your name to see your first show."
+            message: "Enter your name to see your first show.",
         }
+        this.getNameValue = this.getNameValue.bind(this) //do i need this?
     }
 
-    getNameValue = (nameValue) => {
+    getNameValue = async (nameValue) => {
         /* Calls client api here */
-        //Api.getCoordsFirstShow(nameValue)
-        //self.setState({lat: data.lat, lng: data.lng, message: nameValue});
-        //someprops={someprops};
-        
+        await Api.getCoordsFirstShow(nameValue).then(data => {
+            this.setState({lat: data.lat, lng: data.lng, message:nameValue});
+        })
     }
 
     render() {
