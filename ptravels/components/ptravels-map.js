@@ -13,9 +13,7 @@ import MarkerInfo from './marker-info';
 import ClientApi from './client-api';
 const {BaseLayer, Overlay} = LayersControl;
 const utilities = require('../utilities');
-
-let Api = new ClientApi();
-
+const Api = new ClientApi();
 
 export default class PtravelsMap extends Component {
     constructor() {
@@ -32,6 +30,7 @@ export default class PtravelsMap extends Component {
         /* Calls client api here */
         //Api.getCoordsFirstShow(nameValue)
         //self.setState({lat: data.lat, lng: data.lng, message: nameValue});
+        //someprops={someprops};
         
     }
 
@@ -42,7 +41,6 @@ export default class PtravelsMap extends Component {
 
         return (
             <Map center={position} zoom={this.state.zoom}>
-                {/* <ZoomControl position="topright" /> */}
                 <TileLayer
                     url='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                     attribution='© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -53,7 +51,6 @@ export default class PtravelsMap extends Component {
                 <Marker position={position}>
                     <Popup>
                         <MarkerInfo message={message}/>
-                        <div>{this.state.val}</div>
                     </Popup>
                 </Marker>
             </Map>
