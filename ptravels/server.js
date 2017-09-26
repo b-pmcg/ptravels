@@ -47,15 +47,26 @@ app.listen(port, () => {
     console.log(`Express server running on port: ${port}`);
 });
 
-app.get('/usershows/:username', async(req, res) => {
+// v3 Get setlist info from showid
+app.get('/setlistinfo/:showid', async(req, res) => {
     res.set(headerSettings);
-    let username = req.params.username;
-    let pnetData = await gateway.getShowsByUsername(username);
-    console.log(pnetData);
+    let showid = req.params.showid;
+    let pnetData = await gateway.getSetlistByShowId(showid);
+    console.log("setlistinfo: " + pnetData);
     res.write(JSON.stringify(pnetData));
     res.end();
 });
 
+// v2 Get all shows by username
+app.get('/usershows/:username', async(req, res) => {
+    res.set(headerSettings);
+    let username = req.params.username;
+    let pnetData = await gateway.getShowsByUsername(username);
+    res.write(JSON.stringify(pnetData));
+    res.end();
+});
+
+// Google Geo API, get show by Venue, City, State
 app.get('/geodata/:showstring', async(req, res) => {
     res.set(headerSettings);
     let showString = req.params.showstring;
@@ -68,15 +79,17 @@ app.get('/geodata/:showstring', async(req, res) => {
     res.end();
 })
 
-app.get('/venueshows/:venue', async(req, res) => {
-    res.set(headerSettings);
-    let venueName = req.params.venue;
-    let allVenueShows = gateway.getVenueByVenueId(venueName);
-    // get shows by venueid
-    res.write(JSON.stringify(coords));
-    res.end();
 
-})
+
+/*Unused right now */
+// app.get('/venueshows/:venue', async(req, res) => {
+//     res.set(headerSettings);
+//     let venueName = req.params.venue;
+//     let allVenueShows = gateway.getVenueByVenueId(venueName);
+//     // get shows by venueid
+//     res.write(JSON.stringify(coords));
+//     res.end();
+// })
 
 //END ROUTES
 
@@ -84,3 +97,13 @@ app.get('/venueshows/:venue', async(req, res) => {
 
 // looks like old request still works!
 //gateway.oldRequest("destiny_unhinged");
+
+/**Think about the factories, before the industrial revolution. Only the skilled, specialized
+ * workers could operate the machinery, be part of the team by crafting componentry
+ * with complex equipment.
+ * 
+ * Later, the industrial revolution would become synonymous with the turning point
+ * of american work culture, becoming far more automated, only being operated by the
+ * worker class. Today's programming culture is mirroring that with the increase in
+ * programming-training, bootcamps, etc.
+*/

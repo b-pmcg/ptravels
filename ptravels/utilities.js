@@ -10,6 +10,10 @@ module.exports = {
         let fullGeoString = `${venuename}, ${city}, ${state}`
         return fullGeoString;
     },
+    getShowId: phishnetApiResponse => {
+        let showid = phishnetApiResponse[0].showid;
+        return showid;
+    },
     getCoordsFromGeoData: googleGeoResponse => {
         //console.log(googleGeoResponse.results[0]);
         let coordinates = {

@@ -4,13 +4,12 @@ const rp = require('request-promise');
 
 export default class ClientApi {
     constructor(props) {
-        this.getCoordsFirstShow = this.getCoordsFirstShow.bind(this);
+        this.getCoordsForSingleShow = this.getCoordsForSingleShow.bind(this);
     }
 
-    getCoordsFirstShow = async (username) => {
+    getCoordsForSingleShow = async (username) => {
         /* Super messy, but finally works. */
         try {
-            var self = this;
             const options = {
                 uri: `http://localhost:3000/usershows/${username}`,
                 headers: {
@@ -18,8 +17,13 @@ export default class ClientApi {
                 },
                 json: true
             };
+            // Get all shows by user:
             let apiResponse = await rp(options);
-            var showString = utilities.getMostRecentShowString(apiResponse);
+            // Get most recent show & turn it into an address string for geolookup:
+            let showString = utilities.getMostRecentShowString(apiResponse);
+            // Get showid
+            let showid = utilities.getShowId(apiResponse);
+
             const options2 = {
                 uri: `http://localhost:3000/geodata/${showString}`,
                 headers: {
@@ -27,9 +31,12 @@ export default class ClientApi {
                 },
                 json: true
             };
+            // Pass address string to geolookup:
             var geodata = await rp(options2)
-            var coords = utilities.getCoordsFromGeoData(geodata);
-            return coords;
+            // Parse results and extract lat/lng into coords object
+            var returnObj = utilities.getCoordsFromGeoData(geodata);
+            returnObj.showid = showid;
+            return returnObj;
         } catch (err) {
             console.log("insidecatch");
             console.log(err);
@@ -77,5 +84,24 @@ export default class ClientApi {
         //     return str;
         // })
         // .catch(err => console.log('Fetch Error: ', err)) //is this error handling implemented correctly?
+    }
+    
+    getSetlistInfoForSingleShow = async showid => {
+        try {
+            console.log("I'm client API, showId is : " + showid)
+            const options = {
+                uri: `http://localhost:3000/setlistinfo/${showid}`,
+                headers: {
+                    'User-Agent': 'Request-Promise'
+                },
+                json: true
+            };
+            let apiResponse = await rp(options);
+            console.log(apiResponse);
+            return apiResponse;
+        } catch (err) {
+            console.log("insidecatch");
+            console.log(err);
+        };
     }
 }

@@ -5,6 +5,6 @@ export default class MarkerInfo extends React.Component {
     }
 
     render() {
-        return (<span>Hi! {this.props.message}</span>);
+        return (<div><span>Hi! {this.props.message}</span></div>);
     }
 }
