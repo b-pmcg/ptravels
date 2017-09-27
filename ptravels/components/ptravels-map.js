@@ -27,21 +27,22 @@ export default class PtravelsMap extends Component {
             message: "Enter your name to see your first show.",
             showid: "showid inititials state",
             venueid: "",
-            artist: ""
+            artist: "",
+            markers: []
         }
         // this.getNameValueFromNameForm = this.getNameValueFromNameForm.bind(this) //do i need this?
     }
 
     getNameValueFromNameForm = async (nameValue) => {
-        /* Calls client api here */
-        //you now have showid in state after this method:
-        await api.getCoordsForSingleShow(nameValue).then(data => {
-            this.setState({lat: data.lat, lng: data.lng, showid: data.showid, message:nameValue});
-            api.getSetlistInfoForSingleShow(data.showid).then(response => {
-                console.log(response.response.data[0].artist)
-                var parsed = Parser(response.response.data[0].setlistdata)
-                this.setState({artist: parsed});
-            })
+        //await api.getCoordsForSingleShow(nameValue).then(data => {
+        await api.getCoordsForAllShowsByUser(nameValue).then(data => {
+            console.log(data);
+            this.setState({markers: data});
+            // api.getSetlistInfoForSingleShow(data.showid).then(response => {
+            //     //console.log(response.response.data[0].artist)
+            //         var parsed = Parser(response.response.data[0].setlistdata)
+            //     this.setState({artist: parsed});
+            // })
         });
     }
 
@@ -59,11 +60,13 @@ export default class PtravelsMap extends Component {
                 <Control position="topleft">
                     <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
                 </Control>
-                <Marker position={position}>
+                {this.state.markers.map((position, idx) => 
+                    <Marker key={`marker-${idx}`} position={position}>
                     <Popup>
-                        <MarkerInfo message={message}/>
+                      <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
                     </Popup>
-                </Marker>
+                  </Marker>
+                  )}
             </Map>
         )
     }
