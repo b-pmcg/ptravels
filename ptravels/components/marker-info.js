@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactPlayer from 'react-player'
 export default class MarkerInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -6,7 +7,8 @@ export default class MarkerInfo extends React.Component {
 
     render() {
         return (<div>
-            <div><span>{this.props.message.artist[this.props.index]}</span></div>
+            <div><ReactPlayer url='https://phish.in/audio/000/004/643/4643.mp3' playing />
+            <span>{this.props.message.artist[this.props.index]}</span></div>
             <div><span>{this.props.message.venue[this.props.index]}</span></div>
             <div><span>{this.props.message.location[this.props.index]}</span></div>
             <div><span>{this.props.message.long_date[this.props.index]}</span></div>

@@ -42,8 +42,8 @@ export default class PtravelsMap extends Component {
     }
     /**ARRAY IS WORKING
      * Time how long it takes, any way to speed it up?
-     * Add show info to markers popup
-     * Add phishtracks/phish.in to popup
+     * Add phishtracks/phish.in to popup 
+     * jsonApi gets mp3 url: (http://phish.in/api/v1/shows/1994-10-31) 
      * DEPLOY!
      */
     getNameValueFromNameForm = async (nameValue) => {
