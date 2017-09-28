@@ -5,7 +5,14 @@ export default class MarkerInfo extends React.Component {
     }
 
     render() {
-        console.log(this.props.message[this.props.index]);
-        return (<div><span>{this.props.message[this.props.index]}</span></div>);
+        return (<div>
+            <div><span>{this.props.message.artist[this.props.index]}</span></div>
+            <div><span>{this.props.message.venue[this.props.index]}</span></div>
+            <div><span>{this.props.message.location[this.props.index]}</span></div>
+            <div><span>{this.props.message.long_date[this.props.index]}</span></div>
+            <div><span>{this.props.message.relative_date[this.props.index]}</span></div>
+            <div><span>{this.props.message.setlistdata[this.props.index]}</span></div>
+            <div><span>{this.props.message.setlistnotes[this.props.index]}</span></div>
+            </div>);
     }
 }

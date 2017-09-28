@@ -26,8 +26,17 @@ export default class PtravelsMap extends Component {
             zoom: 13,
             showids: [],
             venueid: "",
-            showinfo: [],
-            markers: []
+            
+            markers: [],
+            showInfoForMarkerPopup: {
+                artist: [],
+                venue: [],  
+                location: [],
+                long_date: [],
+                relative_date: [],
+                setlistdata: [],
+                setlist_notes: []
+            }
         }
         // this.getNameValueFromNameForm = this.getNameValueFromNameForm.bind(this) //do i need this?
     }
@@ -39,25 +48,47 @@ export default class PtravelsMap extends Component {
      */
     getNameValueFromNameForm = async (nameValue) => {
         //await api.getCoordsForSingleShow(nameValue).then(data => {
-            var showstuff = [];
+            //artist, venue, location, relative_date, setlist_data, setlist_notes
+            let artist = [];
+            let venue = [];
+            let location = [];
+            let long_date = [];
+            let relative_date = [];
+            let setlistdata = [];
+            let setlistnotes = [];
         await api.getCoordsForAllShowsByUser(nameValue).then(data => {
             console.log(data);
             this.setState({markers: data.markers});
             console.log(data.showid)
             data.showid.map(showidstring => {
                 api.getSetlistInfoForSingleShow(showidstring).then(response => {
-                    console.log(typeof response.response.data);
-                    console.log(response.response.data); // this is an object
-                    var parsed = Parser(response.response.data["0"].setlistdata)
-                    console.log("Parsed:")
-                    console.log(parsed);
-                    showstuff.push(parsed);
-                    console.log("showstuff:")
-                    console.log(showstuff[0] instanceof Array) //is an array
+                // for the future: data[0] is a single index array containing an object with all the data
+                    let parsedArtist = Parser(response.response.data[0].artist);
+                    let parsedVenue = Parser(response.response.data[0].venue);
+                    let parsedLocation = Parser(response.response.data[0].location);
+                    let parsedLongDate = Parser(response.response.data[0].long_date);
+                    let parsedRelativeDate = Parser(response.response.data[0].relative_date);
+                    let parsedSetlistData = Parser(response.response.data[0].setlistdata);
+                    let parsedSetlistNotes = Parser(response.response.data[0].setlistnotes);
+                    artist.push(parsedArtist);
+                    venue.push(parsedVenue);
+                    location.push(parsedLocation);
+                    long_date.push(parsedLongDate);
+                    relative_date.push(parsedRelativeDate);
+                    setlistdata.push(parsedSetlistData);
+                    setlistnotes.push(parsedSetlistNotes);
                 })
             })
                 
-            this.setState({showinfo: showstuff});
+            this.setState({showInfoForMarkerPopup: {
+                artist,
+                venue,
+                location,
+                long_date,
+                relative_date,
+                setlistdata,
+                setlistnotes
+            }});
             
         });
     }
@@ -66,7 +97,7 @@ export default class PtravelsMap extends Component {
         const position = [this.state.lat, this.state.lng];
         const center = [51.505, -0.09];
         //const message = ["messag1", "message2"];
-        const message = this.state.showinfo;
+        const propsetlistdata = this.state.showInfoForMarkerPopup;
 
         return (
             <Map center={position} zoom={this.state.zoom}>
@@ -80,7 +111,7 @@ export default class PtravelsMap extends Component {
                 {this.state.markers.map((position, i) => 
                     <Marker key={"mykey" + i} position={position}>
                         <Popup>
-                            <MarkerInfo index={i} message={message}/>
+                            <MarkerInfo index={i} message={propsetlistdata}/>
                         </Popup>
                   </Marker>
                   )}
