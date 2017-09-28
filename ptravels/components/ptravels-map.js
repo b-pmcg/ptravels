@@ -24,32 +24,49 @@ export default class PtravelsMap extends Component {
             lat: 39.209425,
             lng: -76.86181599999999,
             zoom: 13,
-            message: "Enter your name to see your first show.",
-            showid: "showid inititials state",
+            showids: [],
             venueid: "",
-            artist: "",
+            showinfo: [],
             markers: []
         }
         // this.getNameValueFromNameForm = this.getNameValueFromNameForm.bind(this) //do i need this?
     }
-
+    /**ARRAY IS WORKING
+     * Time how long it takes, any way to speed it up?
+     * Add show info to markers popup
+     * Add phishtracks/phish.in to popup
+     * DEPLOY!
+     */
     getNameValueFromNameForm = async (nameValue) => {
         //await api.getCoordsForSingleShow(nameValue).then(data => {
+            var showstuff = [];
         await api.getCoordsForAllShowsByUser(nameValue).then(data => {
             console.log(data);
-            this.setState({markers: data});
-            // api.getSetlistInfoForSingleShow(data.showid).then(response => {
-            //     //console.log(response.response.data[0].artist)
-            //         var parsed = Parser(response.response.data[0].setlistdata)
-            //     this.setState({artist: parsed});
-            // })
+            this.setState({markers: data.markers});
+            console.log(data.showid)
+            data.showid.map(showidstring => {
+                api.getSetlistInfoForSingleShow(showidstring).then(response => {
+                    console.log(typeof response.response.data);
+                    console.log(response.response.data); // this is an object
+                    var parsed = Parser(response.response.data["0"].setlistdata)
+                    console.log("Parsed:")
+                    console.log(parsed);
+                    showstuff.push(parsed);
+                    console.log("showstuff:")
+                    console.log(showstuff[0] instanceof Array) //is an array
+                })
+            })
+                
+            this.setState({showinfo: showstuff});
+            
         });
     }
 
     render() {
-        const position = [this.state.lat, this.state.lng]
+        const position = [this.state.lat, this.state.lng];
         const center = [51.505, -0.09];
-        const message = [this.state.artist];
+        //const message = ["messag1", "message2"];
+        const message = this.state.showinfo;
 
         return (
             <Map center={position} zoom={this.state.zoom}>
@@ -60,11 +77,11 @@ export default class PtravelsMap extends Component {
                 <Control position="topleft">
                     <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
                 </Control>
-                {this.state.markers.map((position, idx) => 
-                    <Marker key={`marker-${idx}`} position={position}>
-                    <Popup>
-                      <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
-                    </Popup>
+                {this.state.markers.map((position, i) => 
+                    <Marker key={"mykey" + i} position={position}>
+                        <Popup>
+                            <MarkerInfo index={i} message={message}/>
+                        </Popup>
                   </Marker>
                   )}
             </Map>

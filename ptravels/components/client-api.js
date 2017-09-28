@@ -22,7 +22,7 @@ export default class ClientApi {
             // Get most recent show & turn it into an address string for geolookup:
             let showString = utilities.getMostRecentShowString(apiResponse);
             // Get showid
-            let showid = utilities.getShowId(apiResponse);
+            let showid = utilities.getShowIdForLatest(apiResponse);
 
             const options2 = {
                 uri: `http://localhost:3000/geodata/${showString}`,
@@ -46,6 +46,7 @@ export default class ClientApi {
     getCoordsForAllShowsByUser = async(username) => {
         console.log(username);
         let markers = [];
+        let returnObj = {showid: []};
         try {
             const options = {
                 uri: `http://localhost:3000/usershows/${username}`,
@@ -56,10 +57,13 @@ export default class ClientApi {
             };
             // Get all shows by user:
             let apiResponse = await rp(options);
+            // Get the showid to return to ptravels
+            let showid = utilities.getShowId(apiResponse);
             // Loop through each show & turn it into an address string for geolookup:
             for (let individualShow of apiResponse) {
                 let showString = utilities.getShowString(individualShow);
-                console.log("showstring" + showString);
+                let showid = utilities.getShowId(individualShow);
+                returnObj.showid.push(showid);
 
                 const options2 = {
                     uri: `http://localhost:3000/geodata/${showString}`,
@@ -70,19 +74,19 @@ export default class ClientApi {
                 };
                 // Pass address string to geolookup:
                 var geodata = await rp(options2);
-                console.log("geodata " + geodata.results);
+                //console.log("geodata " + geodata.results);
                 for (let address of geodata.results) {
-                    console.log("address" + address);
+                    //console.log("address" + address);
                     // Parse results and extract lat/lng into coords object
                     var latLongsArray = utilities.getCoordsArrayFromGeoData(address);
-                    console.log(latLongsArray);
+                    //console.log(latLongsArray);
                     markers.push(latLongsArray);
                 }
             }
 
-            console.log("markers" + markers);
-            //returnObj.showid = showid;
-            return markers;
+            console.log(markers.length);
+            returnObj.markers = markers;
+            return returnObj;
         } catch (err) {
             console.log("insidecatch");
             console.log(err);

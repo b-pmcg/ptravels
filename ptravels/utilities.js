@@ -17,8 +17,12 @@ module.exports = {
         let fullGeoString = `${venuename}, ${city}, ${state}`;
         return fullGeoString;
     },
-    getShowId: phishnetApiResponse => {
+    getShowIdForLatest: phishnetApiResponse => {
         let showid = phishnetApiResponse[0].showid;
+        return showid;
+    },
+    getShowId: individualShow => {
+        let showid = individualShow.showid;
         return showid;
     },
     getCoordsFromGeoData: googleGeoResponse => {
@@ -30,7 +34,6 @@ module.exports = {
         return coordinates;
     },
     getCoordsArrayFromGeoData: googleGeoResponse => {
-        //console.log(googleGeoResponse.results[0]);
         let coordinates = [
             googleGeoResponse.geometry.location.lat,
             googleGeoResponse.geometry.location.lng
