@@ -1,3 +1,4 @@
+/**Base component for map and data */
 import React, {Component} from 'react';
 import {
     Map,
@@ -43,15 +44,9 @@ export default class PtravelsMap extends Component {
                 arrayOfPerShowTitleAndMp3ArrayAndObjs: []
             }
         }
-        // this.getNameValueFromNameForm = this.getNameValueFromNameForm.bind(this) //do i need this?
     }
-    /*
-     * jsonApi gets mp3 url: (http://phish.in/api/v1/shows/1994-10-31) 
-     * DEPLOY!
-     */
+
     getNameValueFromNameForm = async (nameValue) => {
-        //await api.getCoordsForSingleShow(nameValue).then(data => {
-            //artist, venue, location, relative_date, setlist_data, setlist_notes
             let artist = [];
             let venue = [];
             let location = [];
@@ -67,15 +62,8 @@ export default class PtravelsMap extends Component {
                 api.getSetlistInfoForSingleShow(showidstring).then(response => {
                 // for the future: data[0] is a single index array containing an object with all the data
                     let setlistDataHtmlString = response.response.data[0].setlistdata;
-                    //console.log(setlistDataHtmlString);
                     var setlistDataHtmlEl = document.createElement('div');
                     setlistDataHtmlEl.innerHTML = setlistDataHtmlString;
-                    // Use this to get song names if needed, (adjust to by class)
-                    //console.log(setlistDataHtmlEl.getElementsByTagName('a'));
-                    // Use this api route to get all show data:
-                    //http://phish.in/api/v1/shows/1998-04-03
-                    //result is like: tracks:[{mp3: ...mp3 url}]
-                    //console.log(response.response.data[0].setlistdata);
                     
                     let parsedArtist = Parser(response.response.data[0].artist);
                     let parsedVenue = Parser(response.response.data[0].venue);
@@ -101,15 +89,10 @@ export default class PtravelsMap extends Component {
                             let titleAndMp3Object = {title: track.title, mp3Url: track.mp3}
                             arrayOfTitleAndMp3Objs.push(titleAndMp3Object);
                         })
-                        // console.log("arrayoftitlemp3objs:")
-                        // console.log(arrayOfTitleAndMp3Objs);
-                        //arrayOfTitleAndMp3Objs.reverse(); //reversse here or???
                         arrayOfPerShowTitleAndMp3ArrayAndObjs.push(arrayOfTitleAndMp3Objs);
                     })
                 })
             })
-            console.log(arrayOfPerShowTitleAndMp3ArrayAndObjs)
-            console.log(setlistdata);
             this.setState({
                 showInfoForMarkerPopup: {
                     artist,
@@ -122,14 +105,11 @@ export default class PtravelsMap extends Component {
                     tracklistAndUrl,
                     arrayOfPerShowTitleAndMp3ArrayAndObjs
             }});
-            
         });
     }
 
     render() {
         const position = [this.state.lat, this.state.lng];
-        const center = [41.7637, 72.6851];
-        //const message = ["messag1", "message2"];
         const propsetlistdata = this.state.showInfoForMarkerPopup;
 
         return (
@@ -146,7 +126,7 @@ export default class PtravelsMap extends Component {
                         <Popup>
                             <MarkerInfo index={i} message={propsetlistdata}/>
                         </Popup>
-                  </Marker>
+                    </Marker>
                   )}
             </Map>
         )

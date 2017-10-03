@@ -1,3 +1,4 @@
+/**Renders a link with an individual song title, plus sets url state for react player */
 import React, { Component } from 'react';
 import ReactPlayer from 'react-player'
 export default class SetlistSongComponent extends React.Component {
