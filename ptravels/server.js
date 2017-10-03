@@ -47,7 +47,7 @@ app.listen(port, () => {
     console.log(`Express server running on port: ${port}`);
 });
 
-// v3 Get setlist info from showid
+// Pnet v3 Get setlist info from showid
 app.get('/setlistinfo/:showid', async(req, res) => {
     res.set(headerSettings);
     let showid = req.params.showid;
@@ -57,7 +57,7 @@ app.get('/setlistinfo/:showid', async(req, res) => {
     res.end();
 });
 
-// v2 Get all shows by username
+// Pnet v2 Get all shows by username
 app.get('/usershows/:username', async(req, res) => {
     res.set(headerSettings);
     let username = req.params.username;
@@ -65,6 +65,20 @@ app.get('/usershows/:username', async(req, res) => {
     res.write(JSON.stringify(pnetData));
     res.end();
 });
+
+// Phish.in API, get show info by show date
+app.get('/phishin/shows/:showdate', async(req, res) => {
+    res.set(headerSettings);
+    let showDate = req.params.showdate;
+    console.log("phishin usa!" + showDate)
+    let showDateData = await gateway.getMp3ShowInfoByShowDate(showDate);
+    if (!showDateData) {
+        console.log("Handle this error better (server.js)");
+        return; // Clean this up somehow
+    }
+    res.write(JSON.stringify(showDateData));
+    res.end();
+})
 
 // Google Geo API, get show by Venue, City, State
 app.get('/geodata/:showstring', async(req, res) => {

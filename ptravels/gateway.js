@@ -55,6 +55,24 @@ module.exports = {
             console.log(err);
         };
     },
+    // Phish.in API
+    getMp3ShowInfoByShowDate: async showdate => {
+        try {
+            const options = {
+                uri: `http://phish.in/api/v1/shows/${showdate}`,
+                headers: {
+                    'User-Agent': 'Request-Promise'
+                },
+                json: true
+            };
+            let apiResponse = await rp(options);
+            console.log(`getMp3ShowInfoByShowDateResponse: ${apiResponse}`);
+            return apiResponse;
+        } catch (err) {
+            console.log("insidecatch");
+            console.log(err);
+        };
+    },
     // Google API
     getGeoData: async showString => {
         try {

@@ -12,9 +12,7 @@ export default class ClientApi {
         try {
             const options = {
                 uri: `http://localhost:3000/usershows/${username}`,
-                headers: {
-                    'User-Agent': 'Request-Promise'
-                },
+                headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
             // Get all shows by user:
@@ -26,9 +24,7 @@ export default class ClientApi {
 
             const options2 = {
                 uri: `http://localhost:3000/geodata/${showString}`,
-                headers: {
-                    'User-Agent': 'Request-Promise'
-                },
+                headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
             // Pass address string to geolookup:
@@ -50,9 +46,7 @@ export default class ClientApi {
         try {
             const options = {
                 uri: `http://localhost:3000/usershows/${username}`,
-                headers: {
-                    'User-Agent': 'Request-Promise'
-                },
+                headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
             // Get all shows by user:
@@ -67,9 +61,7 @@ export default class ClientApi {
 
                 const options2 = {
                     uri: `http://localhost:3000/geodata/${showString}`,
-                    headers: {
-                        'User-Agent': 'Request-Promise'
-                    },
+                    headers: {'User-Agent': 'Request-Promise'},
                     json: true
                 };
                 // Pass address string to geolookup:
@@ -98,13 +90,29 @@ export default class ClientApi {
             console.log("I'm client API, showId is : " + showid)
             const options = {
                 uri: `http://localhost:3000/setlistinfo/${showid}`,
-                headers: {
-                    'User-Agent': 'Request-Promise'
-                },
+                headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
             let apiResponse = await rp(options);
             console.log(apiResponse);
+            return apiResponse;
+        } catch (err) {
+            console.log("insidecatch");
+            console.log(err);
+        };
+    }
+
+    getMp3UrlsForSingleShowFromPhishin = async showdate => {
+        try {
+            console.log("I'm client API, showdate is : " + showdate)
+            const options = {
+                uri: `http://localhost:3000/phishin/shows/${showdate}`,
+                headers: {'User-Agent': 'Request-Promise'},
+                json: true
+            };
+            let apiResponse = await rp(options);
+            // console.log("apiresponse for getMp3UrlsForSingleShowFromPhishin")
+            // console.log(apiResponse);
             return apiResponse;
         } catch (err) {
             console.log("insidecatch");
