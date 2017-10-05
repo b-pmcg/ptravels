@@ -17,9 +17,7 @@ export default class SetlistSongComponent extends React.Component {
 
     render() {
         return (
-            <div>
-                <a href='#' onClick={() => this.load(this.props.data.mp3Url)}className='setlist-song'>{this.props.data.title} </a>
-            </div>
+            <div className='setlist'><a href='#' onClick={() => this.load(this.props.data.mp3Url)}className='setlist-song'>{this.props.data.title}</a>, </div>
         );
     }
 }

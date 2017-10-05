@@ -61,6 +61,7 @@ export default class PtravelsMap extends Component {
             data.showid.map(showidstring => {
                 api.getSetlistInfoForSingleShow(showidstring).then(response => {
                 // for the future: data[0] is a single index array containing an object with all the data
+                // theres a disconnect between coords and showinfo
                     let setlistDataHtmlString = response.response.data[0].setlistdata;
                     var setlistDataHtmlEl = document.createElement('div');
                     setlistDataHtmlEl.innerHTML = setlistDataHtmlString;
