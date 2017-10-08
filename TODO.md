@@ -6,6 +6,8 @@
 
 
 ## TODOs
-* reimplement react player
 * make sure when you're calling all user shows from phishnet, you filter phish only.
 or handle other artists (i.e. Trey/Mike solo)
+* fix how multiple shows at same venue are handled
+* fix "cannot read property lat of null" issue w/ destiny_unhinged
+* tidy up unused BS.
