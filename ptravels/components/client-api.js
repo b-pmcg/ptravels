@@ -41,8 +41,8 @@ export default class ClientApi {
 
     getCoordsForAllShowsByUser = async(username) => {
         console.log(username);
-        let markers = [];
-        let returnObj = {showid: []};
+        //let latLng = [];
+        let returnArray = [];
         try {
             const options = {
                 uri: `http://localhost:3000/usershows/${username}`,
@@ -51,13 +51,15 @@ export default class ClientApi {
             };
             // Get all shows by user:
             let apiResponse = await rp(options);
-            // Get the showid to return to ptravels
-            let showid = utilities.getShowId(apiResponse);
             // Loop through each show & turn it into an address string for geolookup:
             for (let individualShow of apiResponse) {
+                let showidCoordsCombo = {
+                    showid: [],
+                    latLng: []
+                };
                 let showString = utilities.getShowString(individualShow);
-                let showid = utilities.getShowId(individualShow);
-                returnObj.showid.push(showid);
+                let showid = individualShow.showid
+                showidCoordsCombo.showid.push(showid);
 
                 const options2 = {
                     uri: `http://localhost:3000/geodata/${showString}`,
@@ -66,19 +68,12 @@ export default class ClientApi {
                 };
                 // Pass address string to geolookup:
                 var geodata = await rp(options2);
-                //console.log("geodata " + geodata.results);
-                for (let address of geodata.results) {
-                    //console.log("address" + address);
-                    // Parse results and extract lat/lng into coords object
-                    var latLongsArray = utilities.getCoordsArrayFromGeoData(address);
-                    //console.log(latLongsArray);
-                    markers.push(latLongsArray);
-                }
+                // We may get multiple address results, but for now just take the first.
+                var latLongsArray = utilities.getCoordsArrayFromGeoData(geodata.results[0]);
+                showidCoordsCombo.latLng.push(latLongsArray);
+                returnArray.push(showidCoordsCombo)
             }
-
-            console.log(markers.length);
-            returnObj.markers = markers;
-            return returnObj;
+            return returnArray;
         } catch (err) {
             console.log("insidecatch");
             console.log(err);
