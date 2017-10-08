@@ -104,6 +104,7 @@ export default class MarkerInfo extends React.Component {
             onChange={this.onSeekChange}
             onMouseUp={this.onSeekMouseUp}
             /></div>
+            <br />
             <div><span>{this.props.showinfo.venue.name}</span></div>
             <div><span>{this.props.showinfo.venue.location}</span></div>
             <div><span>{this.props.showinfo.date}</span></div>
