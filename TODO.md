@@ -14,6 +14,12 @@ Input username to see shows
 add & select multiple users to compare locations
 click on map pins to  get show information
 
+#Refactoring with Phish.in API
+* user enters phish.net username
+* we receieve an array of show data
+* push each showdate into an array
+* loop over showdte array an hit phish.in api
+
 ### How to handle geo data?
 1. phishnet api gets city, location, sends that to Google api for lat long
     * benefits: TOS compliant, totally API driven

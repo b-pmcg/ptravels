@@ -16,10 +16,10 @@ export default class MarkerInfo extends React.Component {
     }
 
     componentWillMount = async () => {
-        console.log(this.props.showid);
-        var info = await api.getSetlistInfoForSingleShow(this.props.showid);
-        var phishinShowInfo = await api.getMp3UrlsForSingleShowFromPhishin(info.response.data[0].showdate);
-        console.log(phishinShowInfo);
+        // console.log(this.props.showid);
+        // var info = await api.getSetlistInfoForSingleShow(this.props.showid);
+        // var phishinShowInfo = await api.getMp3UrlsForSingleShowFromPhishin(info.response.data[0].showdate);
+        // console.log(phishinShowInfo);
     }
 
     /* <ReactPlayer url='https://phish.in/audio/000/031/014/31014.mp3' playing />*/

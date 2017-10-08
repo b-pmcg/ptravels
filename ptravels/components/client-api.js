@@ -6,6 +6,21 @@ export default class ClientApi {
     constructor(props) {
         this.getCoordsForSingleShow = this.getCoordsForSingleShow.bind(this);
     }
+    getAllUserDataFromPhishnet = async(username) => {
+        try {
+            const options = {
+                uri: `http://localhost:3000/usershows/${username}`,
+                headers: {'User-Agent': 'Request-Promise'},
+                json: true
+            };
+            // Get all shows by user:
+            let apiResponse = await rp(options);
+            return apiResponse;
+        } catch (err) {
+            console.log("insidecatch");
+            console.log(err);
+        };
+    }
 
     getCoordsForSingleShow = async(username) => {
         /* Super messy, but finally works. */
@@ -97,17 +112,14 @@ export default class ClientApi {
         };
     }
 
-    getMp3UrlsForSingleShowFromPhishin = async showdate => {
+    getInfoForSingleShowFromPhishin = async showdate => {
         try {
-            console.log("I'm client API, showdate is : " + showdate)
             const options = {
                 uri: `http://localhost:3000/phishin/shows/${showdate}`,
                 headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
             let apiResponse = await rp(options);
-            // console.log("apiresponse for getMp3UrlsForSingleShowFromPhishin")
-            // console.log(apiResponse);
             return apiResponse;
         } catch (err) {
             console.log("insidecatch");
