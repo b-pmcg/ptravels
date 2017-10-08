@@ -21,15 +21,9 @@ export default class MarkerInfo extends React.Component {
         console.log(this.props.showinfo);
         this.setState({set1: this.props.showinfo.tracks.filter(item => item.set == "1")});
         this.setState({set2: this.props.showinfo.tracks.filter(item => item.set == "2")});
-        //const set1 = this.props.showinfo.tracks.filter(item => item.set == "1");
-        //const set2 = this.props.showinfo.tracks.filter(item => item.set == "2");
-        // var info = await api.getSetlistInfoForSingleShow(this.props.showid);
-        // var phishinShowInfo = await api.getMp3UrlsForSingleShowFromPhishin(info.response.data[0].showdate);
-        // console.log(phishinShowInfo);
     }
 
-    load = url => {
-        console.log("load" + url)
+    load = url => { 
         this.handleUrl(url)
     }
 
@@ -59,31 +53,12 @@ export default class MarkerInfo extends React.Component {
     ref = player => {
         this.player = player
     }
-    /**
-     * className='react-player'
-              width='100%'
-              height='100%'
-              playing={playing}
-              onReady={() => console.log('onReady')}
-              onStart={() => console.log('onStart')}
-              onBuffer={() => console.log('onBuffer')}
-              onSeek={e => console.log('onSeek', e)}
-              onEnded={() => this.setState({ playing: false })}
-              onError={e => console.log('onError', e)}
-              onProgress={this.onProgress}
-     */
 
     render() {
         const {
             url, playing, volume, muted,
             played, loaded, duration,
-            playbackRate,
-            soundcloudConfig,
-            vimeoConfig,
-            youtubeConfig,
-            fileConfig
-        } = this.state
-        const SEPARATOR = ' · '
+        } = this.state;
 
         const set1 = this.state.set1;
         const set2 = this.state.set2;

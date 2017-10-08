@@ -11,3 +11,4 @@ or handle other artists (i.e. Trey/Mike solo)
 * fix how multiple shows at same venue are handled
 * fix "cannot read property lat of null" issue w/ destiny_unhinged
 * tidy up unused BS.
+* move react player out into a parent component so songs keep playing
