@@ -1,30 +1,11 @@
 # Work Outline:
 
-## What I can do:
-express server running, middleware feeding into express
-express routes for phish api, returns json
-react uses fetch to get data from express (proxy)
-componentDidMount executes fetch
+## Features:
+* add & select multiple users to compare locations
+* display by tour/year/etc.
 
 
-## Things to do:
-### What is this app and what should it do?
-Map interface for phish shows
-Input username to see shows
-add & select multiple users to compare locations
-click on map pins to  get show information
-
-#Refactoring with Phish.in API
-* user enters phish.net username
-* we receieve an array of show data
-* push each showdate into an array
-* loop over showdte array an hit phish.in api
-
-### How to handle geo data?
-1. phishnet api gets city, location, sends that to Google api for lat long
-    * benefits: TOS compliant, totally API driven
-    * drawbacks: google rate limits, slower, dependant on 3rd parties
-
-2. create db for geolocation by scraping google & phishnet venue info
-    * benefits: faster, more accure, not dependant on google geo
-    * drawbacks: not TOS compliant for either, involves extra db work
+## TODOs
+* reimplement react player
+* make sure when you're calling all user shows from phishnet, you filter phish only.
+or handle other artists (i.e. Trey/Mike solo)

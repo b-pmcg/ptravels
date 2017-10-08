@@ -12,11 +12,17 @@ export default class MarkerInfo extends React.Component {
         this.state = {
             url: "",
             played: 0,
+            set1: [],
+            set2: []
         }
     }
 
     componentWillMount = async () => {
-        // console.log(this.props.showid);
+        console.log(this.props.showinfo);
+        this.setState({set1: this.props.showinfo.tracks.filter(item => item.set == "1")});
+        this.setState({set2: this.props.showinfo.tracks.filter(item => item.set == "2")});
+        //const set1 = this.props.showinfo.tracks.filter(item => item.set == "1");
+        //const set2 = this.props.showinfo.tracks.filter(item => item.set == "2");
         // var info = await api.getSetlistInfoForSingleShow(this.props.showid);
         // var phishinShowInfo = await api.getMp3UrlsForSingleShowFromPhishin(info.response.data[0].showdate);
         // console.log(phishinShowInfo);
@@ -65,16 +71,23 @@ export default class MarkerInfo extends React.Component {
      */
 
     render() {
-        // const {
-        //     url, playing, volume, muted,
-        //     played, loaded, duration,
-        //     playbackRate,
-        //     soundcloudConfig,
-        //     vimeoConfig,
-        //     youtubeConfig,
-        //     fileConfig
-        //   } = this.state
-          //const SEPARATOR = ' · '
-        return (<div>{this.props.showid}</div>);
+        const set1 = this.state.set1;
+        const set2 = this.state.set2;
+        return (<div>  
+            <div><span>{this.props.showinfo.venue.name}</span></div>
+            <div><span>{this.props.showinfo.venue.location}</span></div>
+            <br />
+            <div><span>
+                Set 1: {set1.map(trackInfo => {
+                return (<span><a href='#' className='setlist-song'>{trackInfo.title}</a>, </span>)
+                })}
+            </span></div>
+            <br />
+            <div><span>
+                Set 2: {set2.map(trackInfo => {
+                return (<span><a href='#' className='setlist-song'>{trackInfo.title}</a>, </span>)
+                })}
+            </span></div>
+            </div>);
     }
 }

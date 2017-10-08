@@ -45,6 +45,9 @@ export default class PtravelsMap extends Component {
         // Assign the lat/lng to position
         const position = [this.state.lat, this.state.lng];
         const psi = this.state.phishinShowInfo;
+        let key = 0;
+        let markerPosition = [0,0];
+        let showInfo = 0;
 
         return (
             <Map center={position} zoom={this.state.zoom}>
@@ -55,17 +58,18 @@ export default class PtravelsMap extends Component {
                 <Control position="topleft">
                     <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
                 </Control>
-                {psi.map((infoSingleShow) =>
-                    <Marker key={infoSingleShow.data.id} 
-                        position={
-                            [infoSingleShow.data.venue ? infoSingleShow.data.venue.latitude : 0, 
-                            infoSingleShow.data.venue ? infoSingleShow.data.venue.longitude : 0]
-                            }>
+                {psi.map((infoSingleShow) => {
+                    if (infoSingleShow.data !== undefined && infoSingleShow.data.venue !== null && infoSingleShow.success) {
+                        key = infoSingleShow.data.id;
+                        markerPosition = [infoSingleShow.data.venue.latitude, infoSingleShow.data.venue.longitude];
+                        showInfo = infoSingleShow.data;
+                    }
+                    return (<Marker key={key} position={markerPosition}>
                         <Popup>
-                            <MarkerInfo showid={infoSingleShow.data.venue.location || 0}/>
+                            <MarkerInfo showinfo={showInfo}/>
                         </Popup>
-                    </Marker>
-                  )}
+                    </Marker>)
+                })}
             </Map>
         )
     }
