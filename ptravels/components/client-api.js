@@ -113,6 +113,7 @@ export default class ClientApi {
     }
 
     getInfoForSingleShowFromPhishin = async showdate => {
+        console.log(showdate);
         try {
             const options = {
                 uri: `http://localhost:3000/phishin/shows/${showdate}`,
@@ -120,6 +121,7 @@ export default class ClientApi {
                 json: true
             };
             let apiResponse = await rp(options);
+            console.log(apiResponse);
             return apiResponse;
         } catch (err) {
             console.log("insidecatch");

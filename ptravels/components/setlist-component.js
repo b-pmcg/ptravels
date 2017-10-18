@@ -1,35 +1,49 @@
 /**Parent: marker-info
- * Children:
- * Renders a song component for each song. Also passes a function to update
- * react player url when clicking each song.
  */
 import React, { Component } from 'react';
-import ReactPlayer from 'react-player'
 import SetlistSongComponent from './setlist-song-component';
+import ClientApi from './client-api';
+const api = new ClientApi();
 export default class SetlistComponent extends React.Component {
     constructor(props){
         super(props);
-    }
-    load = url => {
-        console.log("load" + url)
-        this.props.handleurl(url)
+        this.state = {
+            url: "",
+            set1: [],
+            set2: []
+        }
     }
 
-    renderLoadButton = (url, label) => {
-        return (
-          <button onClick={() => this.load(url)}>
-            {label}
-          </button>
-        )
+    componentWillMount = async () => {
+        this.setState({set1: this.props.showinfo.tracks.filter(item => item.set == "1")});
+        this.setState({set2: this.props.showinfo.tracks.filter(item => item.set == "2")});
     }
 
     render() {
-        return (
-            <div>
-                {this.props.data.map((song, i) =>
-                    <span key={i + "sckey"}><a href='#' onClick={() => this.load(song.mp3Url)}className='setlist-song'>{song.title}</a>, </span>
-                )} 
-            </div>
-        );
+        const set1 = this.state.set1;
+        const set2 = this.state.set2;
+
+        return (<div>
+            <br />
+            <div><span>{this.props.showinfo.venue.name}</span></div>
+            <div><span>{this.props.showinfo.venue.location}</span></div>
+            <div><span>{this.props.showinfo.date}</span></div>
+            <br />
+            <div><span>Set 1: {set1.map(trackInfo => {
+                    return (<span><a href='#' 
+                            onClick={() => this.props.onClickF(trackInfo.mp3)} 
+                            className='setlist-song'>{trackInfo.title}
+                            </a>, </span>)
+                    })}
+            </span></div>
+            <br />
+            <div><span>Set 2: {set2.map(trackInfo => {
+                    return (<span><a href='#' 
+                            onClick={() => this.props.onClickF(trackInfo.mp3)} 
+                            className='setlist-song'>{trackInfo.title}
+                            </a>, </span>)
+                    })}
+            </span></div>
+            </div>);
     }
 }

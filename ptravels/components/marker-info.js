@@ -17,12 +17,6 @@ export default class MarkerInfo extends React.Component {
         }
     }
 
-    componentWillMount = async () => {
-        console.log(this.props.showinfo);
-        this.setState({set1: this.props.showinfo.tracks.filter(item => item.set == "1")});
-        this.setState({set2: this.props.showinfo.tracks.filter(item => item.set == "2")});
-    }
-
     load = url => { 
         this.handleUrl(url)
     }
@@ -60,41 +54,24 @@ export default class MarkerInfo extends React.Component {
             played, loaded, duration,
         } = this.state;
 
-        const set1 = this.state.set1;
-        const set2 = this.state.set2;
         return (<div>
-            <ReactPlayer
-                ref={this.ref} 
-                url={this.state.url}
-                onProgress={this.onProgress}
-                width='25%'
-                height='100%' 
-                playing />
-            <div className="slider-wrapper">
-            <input
-            type='range' min={0} max={1} step='any'
-            size='100'
-            value={played}
-            onMouseDown={this.onSeekMouseDown}
-            onChange={this.onSeekChange}
-            onMouseUp={this.onSeekMouseUp}
-            /></div>
-            <br />
-            <div><span>{this.props.showinfo.venue.name}</span></div>
-            <div><span>{this.props.showinfo.venue.location}</span></div>
-            <div><span>{this.props.showinfo.date}</span></div>
-            <br />
-            <div><span>
-                Set 1: {set1.map(trackInfo => {
-                return (<span><a href='#' onClick={() => this.load(trackInfo.mp3)} className='setlist-song'>{trackInfo.title}</a>, </span>)
-                })}
-            </span></div>
-            <br />
-            <div><span>
-                Set 2: {set2.map(trackInfo => {
-                return (<span><a href='#' onClick={() => this.load(trackInfo.mp3)} className='setlist-song'>{trackInfo.title}</a>, </span>)
-                })}
-            </span></div>
+                <ReactPlayer
+                    ref={this.ref} 
+                    url={this.state.url}
+                    onProgress={this.onProgress}
+                    width='25%'
+                    height='100%' 
+                    playing />
+                <div className="slider-wrapper">
+                <input
+                type='range' min={0} max={1} step='any'
+                size='100'
+                value={played}
+                onMouseDown={this.onSeekMouseDown}
+                onChange={this.onSeekChange}
+                onMouseUp={this.onSeekMouseUp}
+                /></div>
+                <SetlistComponent onClickF={this.load} showinfo={this.props.showinfo}/>            
             </div>);
     }
 }

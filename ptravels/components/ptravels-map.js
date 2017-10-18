@@ -14,7 +14,6 @@ const api = new ClientApi();
 export default class PtravelsMap extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             lat: 41.7637,
             lng: -72.6851,
@@ -28,16 +27,22 @@ export default class PtravelsMap extends Component {
         let showdateArray = [];
         let phishinShowInfoArray = [];
 
-        // 1 call api, returns .latLng & .showid
+        // Gets a list of shows a user has been to and adds to show date array.
         var phishnetUserData = await api.getAllUserDataFromPhishnet(nameValue);
         for (var i = 0; i < phishnetUserData.length; i++) {
-            showdateArray.push(phishnetUserData[i].showdate) //push me
+            // For now, only user artist 1 (Phish)
+            if (phishnetUserData[i].artist == 1){
+                showdateArray.push(phishnetUserData[i].showdate);
+            }
         }
+        
 
+        // Gets show info for a single show and pushes entire object into array.
         for (var i = 0; i < showdateArray.length; i++) {
             let phishinShowData = await api.getInfoForSingleShowFromPhishin(showdateArray[i]);
             phishinShowInfoArray.push(phishinShowData);
         }
+
         this.setState({phishinShowInfo: phishinShowInfoArray});
     }
 
@@ -57,6 +62,7 @@ export default class PtravelsMap extends Component {
                 <Control position="topleft">
                     <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
                 </Control>
+                
                 {psi.map((infoSingleShow, i) => {
                     if (infoSingleShow.data !== undefined && infoSingleShow.data.venue !== null && infoSingleShow.success) {
                         key = infoSingleShow.data.id;
