@@ -77,12 +77,12 @@ export default class PtravelsMap extends Component {
                 <Control position="topleft">
                     <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
                 </Control>
-                {psi.map((infoSingleShow, ind) => {
+                {psi.map((venueAndUserShows, ind) => {
                         key = ind
-                        markerPosition = [infoSingleShow.venue.latitude, infoSingleShow.venue.longitude];
+                        markerPosition = [venueAndUserShows.venue.latitude, venueAndUserShows.venue.longitude];
                     return (<Marker key={ind + "-" + key} position={markerPosition}>
                         <Popup>
-                            <MarkerInfo showinfo={infoSingleShow}/>
+                            <MarkerInfo showinfo={venueAndUserShows}/>
                         </Popup>
                     </Marker>)
                 })}
