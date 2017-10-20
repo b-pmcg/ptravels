@@ -42,7 +42,6 @@ export default class PtravelsMap extends Component {
             let phishinShowData = await api.getInfoForSingleShowFromPhishin(showdateArray[i]);
             phishinShowInfoArray.push(phishinShowData);
         }
-
         this.setState({phishinShowInfo: phishinShowInfoArray});
     }
 
@@ -51,7 +50,8 @@ export default class PtravelsMap extends Component {
         const psi = this.state.phishinShowInfo;
         let key = 0;
         let markerPosition = [0,0];
-        let showInfo = 0;
+        let showInfo = [];
+        let venueArray = [];
 
         return (
             <Map center={position} zoom={this.state.zoom}>
@@ -62,16 +62,21 @@ export default class PtravelsMap extends Component {
                 <Control position="topleft">
                     <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
                 </Control>
-                
-                {psi.map((infoSingleShow, i) => {
-                    if (infoSingleShow.data !== undefined && infoSingleShow.data.venue !== null && infoSingleShow.success) {
-                        key = infoSingleShow.data.id;
-                        markerPosition = [infoSingleShow.data.venue.latitude, infoSingleShow.data.venue.longitude];
-                        showInfo = infoSingleShow.data;
+                {psi.map((infoSingleShow, ind) => {
+                    
+                    // Not sure if we need this now:
+                    //if (infoSingleShow.data !== undefined && infoSingleShow.data.venue !== null && infoSingleShow.success) {
+                        if (true) {
+                            // map infosingleshow here:
+                        key = infoSingleShow.shows[0].id;
+                        markerPosition = [infoSingleShow.venue.latitude, infoSingleShow.venue.longitude];
+                        // map infosingle show here too:
+                        // need to change how this is processed, "name" is no longer here:
+                        //showInfo.push(infoSingleShow);
                     }
-                    return (<Marker key={i + "-" + key} position={markerPosition}>
+                    return (<Marker key={ind + "-" + key} position={markerPosition}>
                         <Popup>
-                            <MarkerInfo showinfo={showInfo}/>
+                            <MarkerInfo showinfo={infoSingleShow}/>
                         </Popup>
                     </Marker>)
                 })}

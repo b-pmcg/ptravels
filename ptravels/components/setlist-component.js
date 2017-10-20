@@ -15,8 +15,8 @@ export default class SetlistComponent extends React.Component {
     }
 
     componentWillMount = async () => {
-        this.setState({set1: this.props.showinfo.tracks.filter(item => item.set == "1")});
-        this.setState({set2: this.props.showinfo.tracks.filter(item => item.set == "2")});
+        this.setState({set1: this.props.showinfo.shows[0].tracks.filter(item => item.set == "1")});
+        this.setState({set2: this.props.showinfo.shows[0].tracks.filter(item => item.set == "2")});
     }
 
     render() {

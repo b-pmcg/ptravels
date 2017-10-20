@@ -9,6 +9,7 @@ const api = new ClientApi();
 export default class MarkerInfo extends React.Component {
     constructor(props){
         super(props);
+        console.log(this.props.showinfo);
         this.state = {
             url: "",
             played: 0,
