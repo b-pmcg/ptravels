@@ -72,7 +72,10 @@ export default class MarkerInfo extends React.Component {
                 onChange={this.onSeekChange}
                 onMouseUp={this.onSeekMouseUp}
                 /></div>
-                <SetlistComponent onClickF={this.load} showinfo={this.props.showinfo}/>            
+                <br />
+                <div><span>{this.props.showinfo.venue.name}</span></div>
+                <div><span>{this.props.showinfo.venue.location}</span></div>
+                {this.props.showinfo.shows.map(show => <SetlistComponent onClickF={this.load} showinfo={show}/>)}
             </div>);
     }
 }
