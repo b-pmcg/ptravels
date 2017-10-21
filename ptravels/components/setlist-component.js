@@ -2,12 +2,10 @@
  */
 import React, { Component } from 'react';
 import SetlistSongComponent from './setlist-song-component';
-import ClientApi from './client-api';
-const api = new ClientApi();
 export default class SetlistComponent extends React.Component {
     constructor(props){
         super(props);
-        console.log(this.props.showinfo);
+        console.log(this.props.showinfo.tracks);
         this.state = {
             url: "",
             set1: [],
@@ -24,12 +22,19 @@ export default class SetlistComponent extends React.Component {
         this.setState({encore: this.props.showinfo.tracks.filter(item => item.set == "E") || null});
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps.showinfo);
+        this.setState({set1: nextProps.showinfo.tracks.filter(item => item.set == "1") || null});
+        this.setState({set2: nextProps.showinfo.tracks.filter(item => item.set == "2") || null});
+        this.setState({set3: nextProps.showinfo.tracks.filter(item => item.set == "3")});
+        this.setState({encore: nextProps.showinfo.tracks.filter(item => item.set == "E") || null});
+      }
+
     render() {
         const set1 = this.state.set1;
         const set2 = this.state.set2;
         const set3 = this.state.set3;
         const encore = this.state.encore;
-        console.log(this.state.set3.length)
 
         return (<div>
             <div><span>{this.props.showinfo.date}</span></div>
@@ -44,7 +49,7 @@ export default class SetlistComponent extends React.Component {
             </span></div>}
             <br />
             {set2.length == 0 ? null : 
-            <div><span>Set 3: {set2.map(trackInfo => {
+            <div><span>Set 2: {set2.map(trackInfo => {
                     return (<span><a href='#' 
                             onClick={() => this.props.onClickF(trackInfo.mp3)} 
                             className='setlist-song'>{trackInfo.title}

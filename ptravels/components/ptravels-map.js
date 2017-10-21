@@ -40,22 +40,23 @@ export default class PtravelsMap extends Component {
         let push = true;
         // Gets show info for a single show and pushes entire object into array.
         for (var i = 0; i < showdateArray.length; i++) {
-            let phishinShowData = await api.getInfoForSingleShowFromPhishin(showdateArray[i]);
+            let phishinShowApiResponse = await api.getInfoForSingleShowFromPhishin(showdateArray[i]);
             push = true;
             phishinShowInfoArray.some(x => {
-                if (x.venueid == phishinShowData.venueid) {
-                    if (!x.shows.includes(phishinShowData.shows[0])){
-                        x.shows.push(phishinShowData.shows[0])
+                if (x.venueid == phishinShowApiResponse.venueid) {
+                    if (!x.shows.includes(phishinShowApiResponse.shows[0])){
+                        x.shows.push(phishinShowApiResponse.shows[0])
                         push = false
                     }
                 }
             })
             if (push != false){
-                phishinShowInfoArray.push(phishinShowData);
+                phishinShowInfoArray.push(phishinShowApiResponse);
             }
         }
 
-
+        // Sort each shows array by date
+        phishinShowInfoArray.forEach(x => x.shows.sort((a, b) => a.date > b.date));
         console.log(phishinShowInfoArray);
         this.setState({phishinShowInfo: phishinShowInfoArray});
     }
