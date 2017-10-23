@@ -21,6 +21,11 @@ export default class MarkerInfo extends React.Component {
             nextButtonIsDisabled: ""
         }
     }
+    componentWillMount = () => {
+        if (this.props.showinfo.shows.length <= 1) {
+            this.setState({nextButtonIsDisabled: true});
+        }
+    }
     // ReactPlayer stuff should be moved into own component
     load = url => { 
         this.handleUrl(url)
@@ -59,15 +64,19 @@ export default class MarkerInfo extends React.Component {
         let newIndex = this.state.currentlyDisplayedShowIndex > 0 ? this.state.currentlyDisplayedShowIndex - 1 : 0;
         console.log(`Previous: Max index: ${this.state.maxIndex}. Array length: ${this.props.showinfo.shows.length}. New index: ${newIndex}`);
         let theShow = this.props.showinfo.shows[newIndex];
-        this.setState({currentlyDisplayedShowIndex: newIndex, theShow: theShow})
+        let isPrevDisabled = newIndex == 0 ? true : "";
+        let isNextDisabled = newIndex == this.state.maxIndex ? true : "";
+        this.setState({currentlyDisplayedShowIndex: newIndex, theShow: theShow, prevButtonIsDisabled: isPrevDisabled, nextButtonIsDisabled: isNextDisabled})
       }
 
     toggleShowNext = () => {
+        //TODO: disable button thing "kinda" working, need to fix:
         let newIndex = this.state.currentlyDisplayedShowIndex < this.state.maxIndex ? this.state.currentlyDisplayedShowIndex + 1 : this.state.maxIndex;
         console.log(`Next: Max index: ${this.state.maxIndex}. Array length: ${this.props.showinfo.shows.length}. New index: ${newIndex}`);
         let theShow = this.props.showinfo.shows[newIndex];
-        let isDisabled = this.props.showinfo.shows[newIndex] == this.props.showinfo.shows[this.state.maxIndex] ? true : "";
-        this.setState({currentlyDisplayedShowIndex: newIndex, theShow: theShow, nextButtonIsDisabled: isDisabled})
+        let isPrevDisabled = newIndex === 0 ? true : "";
+        let isNextDisabled = newIndex == this.state.maxIndex ? true : "";
+        this.setState({currentlyDisplayedShowIndex: newIndex, theShow: theShow, prevButtonIsDisabled: isPrevDisabled, nextButtonIsDisabled: isNextDisabled})
       }
 
     render() {
@@ -109,7 +118,9 @@ export default class MarkerInfo extends React.Component {
                 <br />
                 <button
                     onClick={this.toggleShowPrev}
-                    className="btn btn-default">{prevLabel}
+                    className="btn btn-default"
+                    disabled={this.state.prevButtonIsDisabled}
+                    >{prevLabel}
                 </button>
                 <button
                     onClick={this.toggleShowNext}

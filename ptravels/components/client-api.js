@@ -120,7 +120,7 @@ export default class ClientApi {
                 json: true
             };
             let apiResponse = await rp(options);
-            
+            console.log(apiResponse)
             // Rearrange the object to be venue-lead
             let newObject = {
                 venueid: apiResponse.data.venue.id,
@@ -131,6 +131,7 @@ export default class ClientApi {
             return newObject;
         } catch (err) {
             console.log("insidecatch");
+            
             console.log(err);
         };
     }

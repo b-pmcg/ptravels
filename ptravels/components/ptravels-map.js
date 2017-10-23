@@ -56,7 +56,11 @@ export default class PtravelsMap extends Component {
         }
 
         // Sort each shows array by date
-        phishinShowInfoArray.forEach(x => x.shows.sort((a, b) => a.date > b.date));
+        phishinShowInfoArray.forEach(x => {
+            return x.shows.sort((a, b) => {
+                return a.date > b.date;
+              });
+        })
         console.log(phishinShowInfoArray);
         this.setState({phishinShowInfo: phishinShowInfoArray});
     }

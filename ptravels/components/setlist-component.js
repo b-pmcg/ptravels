@@ -5,7 +5,6 @@ import SetlistSongComponent from './setlist-song-component';
 export default class SetlistComponent extends React.Component {
     constructor(props){
         super(props);
-        console.log(this.props.showinfo.tracks);
         this.state = {
             url: "",
             set1: [],
@@ -16,18 +15,18 @@ export default class SetlistComponent extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({set1: this.props.showinfo.tracks.filter(item => item.set == "1") || null});
-        this.setState({set2: this.props.showinfo.tracks.filter(item => item.set == "2") || null});
+        this.setState({set1: this.props.showinfo.tracks.filter(item => item.set == "1")});
+        this.setState({set2: this.props.showinfo.tracks.filter(item => item.set == "2")});
         this.setState({set3: this.props.showinfo.tracks.filter(item => item.set == "3")});
-        this.setState({encore: this.props.showinfo.tracks.filter(item => item.set == "E") || null});
+        this.setState({encore: this.props.showinfo.tracks.filter(item => item.set == "E")});
     }
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.showinfo);
-        this.setState({set1: nextProps.showinfo.tracks.filter(item => item.set == "1") || null});
-        this.setState({set2: nextProps.showinfo.tracks.filter(item => item.set == "2") || null});
+        this.setState({set1: nextProps.showinfo.tracks.filter(item => item.set == "1")});
+        this.setState({set2: nextProps.showinfo.tracks.filter(item => item.set == "2")});
         this.setState({set3: nextProps.showinfo.tracks.filter(item => item.set == "3")});
-        this.setState({encore: nextProps.showinfo.tracks.filter(item => item.set == "E") || null});
+        this.setState({encore: nextProps.showinfo.tracks.filter(item => item.set == "E")});
       }
 
     render() {
