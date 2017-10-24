@@ -8,7 +8,7 @@ import ClientApi from './client-api';
 import Parser from 'html-react-parser';
 
 const {BaseLayer, Overlay} = LayersControl;
-const utilities = require('../utilities');
+const venueHack = require('./venue-location-hack');
 const api = new ClientApi();
 
 export default class PtravelsMap extends Component {
@@ -27,7 +27,7 @@ export default class PtravelsMap extends Component {
         let showdateArray = [];
         let phishinShowInfoArray = [];
 
-        // Gets a list of shows a user has been to and adds to show date array.
+        // Get a list of shows a user has been to and adds to show date array.
         var phishnetUserData = await api.getAllUserDataFromPhishnet(nameValue);
         for (var i = 0; i < phishnetUserData.length; i++) {
             // For now, only user artist 1 (Phish)
@@ -40,19 +40,23 @@ export default class PtravelsMap extends Component {
         let push = true;
         // Gets show info for a single show and pushes entire object into array.
         for (var i = 0; i < showdateArray.length; i++) {
-            let phishinShowApiResponse = await api.getInfoForSingleShowFromPhishin(showdateArray[i]);
-            push = true;
-            phishinShowInfoArray.some(x => {
-                if (x.venueid == phishinShowApiResponse.venueid) {
-                    if (!x.shows.includes(phishinShowApiResponse.shows[0])){
-                        x.shows.push(phishinShowApiResponse.shows[0])
-                        push = false
+            try {
+                let phishinShowApiResponse = await api.getInfoForSingleShowFromPhishin(showdateArray[i]);
+                push = true;
+                phishinShowInfoArray.some(x => {
+                    if (x.venueid == phishinShowApiResponse.venueid) {
+                        if (!x.shows.includes(phishinShowApiResponse.shows[0])){
+                            x.shows.push(phishinShowApiResponse.shows[0])
+                            push = false
+                        }
                     }
+                })
+                if (push != false){
+                    phishinShowInfoArray.push(phishinShowApiResponse);
                 }
-            })
-            if (push != false){
-                phishinShowInfoArray.push(phishinShowApiResponse);
-            }
+            } catch(err) {
+                console.log(err);
+            }   
         }
 
         // Sort each shows array by date
@@ -61,7 +65,6 @@ export default class PtravelsMap extends Component {
                 return a.date > b.date;
               });
         })
-        console.log(phishinShowInfoArray);
         this.setState({phishinShowInfo: phishinShowInfoArray});
     }
 
@@ -83,8 +86,13 @@ export default class PtravelsMap extends Component {
                     <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
                 </Control>
                 {psi.map((venueAndUserShows, ind) => {
-                        key = ind
-                        markerPosition = [venueAndUserShows.venue.latitude, venueAndUserShows.venue.longitude];
+                    // Temporary hack to fix lat/lngs that are null from the Phishin API response
+                    if (venueAndUserShows.venue.latitude == null) {
+                        venueHack.setMissingLocationData(venueAndUserShows);
+                    }
+                    key = ind
+                    markerPosition = [venueAndUserShows.venue.latitude, venueAndUserShows.venue.longitude];
+                        
                     return (<Marker key={ind + "-" + key} position={markerPosition}>
                         <Popup>
                             <MarkerInfo showinfo={venueAndUserShows}/>

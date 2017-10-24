@@ -17,7 +17,6 @@ export default class ClientApi {
             let apiResponse = await rp(options);
             return apiResponse;
         } catch (err) {
-            console.log("insidecatch");
             console.log(err);
         };
     }
@@ -44,19 +43,16 @@ export default class ClientApi {
             };
             // Pass address string to geolookup:
             var geodata = await rp(options2)
-                // Parse results and extract lat/lng into coords object
+            // Parse results and extract lat/lng into coords object
             var returnObj = utilities.getCoordsFromGeoData(geodata);
             returnObj.showid = showid;
             return returnObj;
         } catch (err) {
-            console.log("insidecatch");
             console.log(err);
         };
     }
 
     getCoordsForAllShowsByUser = async(username) => {
-        console.log(username);
-        //let latLng = [];
         let returnArray = [];
         try {
             const options = {
@@ -90,7 +86,6 @@ export default class ClientApi {
             }
             return returnArray;
         } catch (err) {
-            console.log("insidecatch");
             console.log(err);
         };
     }
@@ -104,10 +99,8 @@ export default class ClientApi {
                 json: true
             };
             let apiResponse = await rp(options);
-            console.log(apiResponse);
             return apiResponse;
         } catch (err) {
-            console.log("insidecatch");
             console.log(err);
         };
     }
@@ -121,6 +114,13 @@ export default class ClientApi {
             };
             let apiResponse = await rp(options);
             console.log(apiResponse)
+            if (apiResponse.success == false || apiResponse.data.venue == null) {
+                apiResponse.success == false 
+                ? console.log(`showdate ${showdate} not found`) 
+                : apiResponse.data.venue == null ? console.log(`showdate ${showdate} venue is null`)
+                : console.log(`ERROR! with if statement.`) 
+                return;
+            }
             // Rearrange the object to be venue-lead
             let newObject = {
                 venueid: apiResponse.data.venue.id,
@@ -130,8 +130,6 @@ export default class ClientApi {
             delete newObject.shows[0].venue;
             return newObject;
         } catch (err) {
-            console.log("insidecatch");
-            
             console.log(err);
         };
     }
