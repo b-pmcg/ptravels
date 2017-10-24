@@ -15,9 +15,9 @@ export default class PtravelsMap extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            lat: 41.7637,
-            lng: -72.6851,
-            zoom: 13,
+            lat: 31,
+            lng: -94,
+            zoom: 5,
             phishinShowInfo: [],
             markers: []
         }
