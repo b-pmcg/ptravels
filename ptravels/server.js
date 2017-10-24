@@ -10,9 +10,13 @@ const config = require('./webpack.config.babel.js');
 const compiler = webpack(config);
 const port = 3000;
 
-var http = require('http');
-var finalhandler = require('finalhandler');
-var Router = require('router');
+const http = require('http');
+const finalhandler = require('finalhandler');
+const Router = require('router');
+const headerSettings = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin': 'http://localhost:3001'
+}
 
 const creds = require('./config');
 const M = creds.pnetConfig.methods;
@@ -32,54 +36,88 @@ function queryComposer(name, value) {
 }
 
 const queryToPass = [];
- 
+
 // Webpack
 app.use(webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath,
-    stats: {colors: true}
-  }));
+    stats: { colors: true }
+}));
 
 app.listen(port, () => {
     console.log(`Express server running on port: ${port}`);
-  });
-
-// Routes --Move this out!--  
-// app.get('/makerequest', async function (req, res) {
-// res.setHeader('Content-Type', 'application/json; charset=utf-8');
-// queryToPass.push(new queryComposer("showid", showid).queryString);
-// var pdata =  await gateway.testRequest(M.getAllVenues, queryToPass);
-// console.log(pdata);
-// res.write(JSON.stringify(pdata));
-// res.end();
-// });
-
-app.get('/usershows/:username', async (req, res) => {
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
-  let username = req.params.username;
-  let pnetData =  await gateway.getShowsByUsername(username);
-  let showString = utilities.getMostRecentShowString(pnetData);
-  let geoData = await gateway.getGeoData(showString);
-  let coords = utilities.getCoordsFromGeoData(geoData);
-  res.write(JSON.stringify(coords));
-  res.end();
 });
 
-app.get('/venueshows/:venue', async (req, res) => {
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
-  let venueName = req.params.venue;
-  let allVenueShows = gateway.getVenueByVenueId(venueName);
-  // get shows by venueid
+// Pnet v3 Get setlist info from showid
+app.get('/setlistinfo/:showid', async(req, res) => {
+    res.set(headerSettings);
+    let showid = req.params.showid;
+    let pnetData = await gateway.getSetlistByShowId(showid);
+    console.log("setlistinfo: " + pnetData);
+    res.write(JSON.stringify(pnetData));
+    res.end();
+});
 
-  res.write(JSON.stringify(coords));
-  res.end();
+// Pnet v2 Get all shows by username
+app.get('/usershows/:username', async(req, res) => {
+    res.set(headerSettings);
+    let username = req.params.username;
+    let pnetData = await gateway.getShowsByUsername(username);
+    res.write(JSON.stringify(pnetData));
+    res.end();
+});
 
+// Phish.in API, get show info by show date
+app.get('/phishin/shows/:showdate', async(req, res) => {
+    res.set(headerSettings);
+    let showDate = req.params.showdate;
+    console.log("phishin usa!" + showDate)
+    let showDateData = await gateway.getMp3ShowInfoByShowDate(showDate);
+    if (!showDateData) {
+        console.log("Handle this error better (server.js)");
+        return; // Clean this up somehow
+    }
+    res.write(JSON.stringify(showDateData));
+    res.end();
 })
-  
-  //END ROUTES
+
+// Google Geo API, get show by Venue, City, State
+app.get('/geodata/:showstring', async(req, res) => {
+    res.set(headerSettings);
+    let showString = req.params.showstring;
+    let geoData = await gateway.getGeoData(showString);
+    if (!geoData) {
+        console.log("Handle this error better (server.js)");
+        return; // Clean this up somehow
+    }
+    res.write(JSON.stringify(geoData));
+    res.end();
+})
+
+
+
+/*Unused right now */
+// app.get('/venueshows/:venue', async(req, res) => {
+//     res.set(headerSettings);
+//     let venueName = req.params.venue;
+//     let allVenueShows = gateway.getVenueByVenueId(venueName);
+//     // get shows by venueid
+//     res.write(JSON.stringify(coords));
+//     res.end();
+// })
+
+//END ROUTES
 
 //gateway.makeRequest(M.getPeopleByShowId, queryToPass);
 
 // looks like old request still works!
 //gateway.oldRequest("destiny_unhinged");
+
+/**Think about the factories, before the industrial revolution. Only the skilled, specialized
+ * workers could operate the machinery, be part of the team by crafting componentry
+ * with complex equipment.
+ * 
+ * Later, the industrial revolution would become synonymous with the turning point
+ * of american work culture, becoming far more automated, only being operated by the
+ * worker class. Today's programming culture is mirroring that with the increase in
+ * programming-training, bootcamps, etc.
+*/

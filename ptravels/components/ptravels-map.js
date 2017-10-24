@@ -1,66 +1,105 @@
-import React, { Component } from 'react';
-import { Map, LayersControl, Marker, Popup, TileLayer, ZoomControl} from 'react-leaflet';
+/**Base component for map and data */
+import React, {Component} from 'react';
+import {Map, LayersControl, Marker, Popup, TileLayer, ZoomControl} from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import NameForm from './name-form';
 import MarkerInfo from './marker-info';
-const { BaseLayer, Overlay } = LayersControl;
+import ClientApi from './client-api';
+import Parser from 'html-react-parser';
 
-/*This is a container component that combines the
-Map component and single-input.js and is imported in app.js*/
+const {BaseLayer, Overlay} = LayersControl;
+const venueHack = require('./venue-location-hack');
+const api = new ClientApi();
 
 export default class PtravelsMap extends Component {
-    constructor(){
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-          lat: 39.209425,
-          lng: -76.86181599999999,
-          zoom: 13,
-          message: "Enter your name to see your first show."
-        };
-      }
-
-    getNameValue = (nameValue) => {
-        let self = this; // <-- How to avoid?
-        fetch(`/usershows/${nameValue}`)
-          .then(response => {  
-          if (response.status !== 200) {  
-              console.log('Looks like there was a problem. Status Code: ' + response.status);  
-              return;  
-          }
-          response.json().then(data => {  
-              console.log(data); 
-              self.setState({lat: data.lat, lng: data.lng, message: nameValue});
-          })  
-          })
-          .then( () => {
-            //now fetch all venues
-          })
-          .catch(err => console.log('Fetch Error :-S', err)) //is this error handling implemented correctly?
+            lat: 41.7637,
+            lng: -72.6851,
+            zoom: 13,
+            phishinShowInfo: [],
+            markers: []
+        }
     }
-  
-    render() {
-        const position = [this.state.lat, this.state.lng]
-        const center = [51.505, -0.09];
-        const rectangle = [[51.49, -0.08], [51.5, -0.06]];
-        const message = [this.state.message];
 
-    return (
-      <Map center={position} zoom={this.state.zoom}>
-      {/* <ZoomControl position="topright" /> */}
-      <TileLayer
-        url='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        attribution='© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        maxZoom={18}/>
-      
-      <Control position="topleft" >
-        <NameForm callbackFromParent={this.getNameValue}/>
-      </Control>
-      <Marker position={position}>
-          <Popup>
-            <MarkerInfo message={message}/>
-          </Popup>
-        </Marker>
-    </Map>
-    )
-  }
+    getNameValueFromNameForm = async (nameValue) => {
+        let showdateArray = [];
+        let phishinShowInfoArray = [];
+
+        // Get a list of shows a user has been to and adds to show date array.
+        var phishnetUserData = await api.getAllUserDataFromPhishnet(nameValue);
+        for (var i = 0; i < phishnetUserData.length; i++) {
+            // For now, only user artist 1 (Phish)
+            if (phishnetUserData[i].artist == 1){
+                showdateArray.push(phishnetUserData[i].showdate);
+            }
+        }
+        
+        let duplicateVenues = [];
+        let push = true;
+        // Gets show info for a single show and pushes entire object into array.
+        for (var i = 0; i < showdateArray.length; i++) {
+            try {
+                let phishinShowApiResponse = await api.getInfoForSingleShowFromPhishin(showdateArray[i]);
+                push = true;
+                phishinShowInfoArray.some(x => {
+                    if (x.venueid == phishinShowApiResponse.venueid) {
+                        if (!x.shows.includes(phishinShowApiResponse.shows[0])){
+                            x.shows.push(phishinShowApiResponse.shows[0])
+                            push = false
+                        }
+                    }
+                })
+                if (push != false){
+                    phishinShowInfoArray.push(phishinShowApiResponse);
+                }
+            } catch(err) {
+                console.log(err);
+            }   
+        }
+
+        // Sort each shows array by date
+        phishinShowInfoArray.forEach(x => {
+            return x.shows.sort((a, b) => {
+                return a.date > b.date;
+              });
+        })
+        this.setState({phishinShowInfo: phishinShowInfoArray});
+    }
+
+    render() {
+        const position = [this.state.lat, this.state.lng];
+        const psi = this.state.phishinShowInfo;
+        let key = 0;
+        let markerPosition = [0,0];
+        let showInfo = [];
+        let venueArray = [];
+
+        return (
+            <Map center={position} zoom={this.state.zoom}>
+                <TileLayer
+                    url='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                    attribution='© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    maxZoom={18}/>
+                <Control position="topleft">
+                    <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
+                </Control>
+                {psi.map((venueAndUserShows, ind) => {
+                    // Temporary hack to fix lat/lngs that are null from the Phishin API response
+                    if (venueAndUserShows.venue.latitude == null) {
+                        venueHack.setMissingLocationData(venueAndUserShows);
+                    }
+                    key = ind
+                    markerPosition = [venueAndUserShows.venue.latitude, venueAndUserShows.venue.longitude];
+                        
+                    return (<Marker key={ind + "-" + key} position={markerPosition}>
+                        <Popup>
+                            <MarkerInfo showinfo={venueAndUserShows}/>
+                        </Popup>
+                    </Marker>)
+                })}
+            </Map>
+        )
+    }
 }

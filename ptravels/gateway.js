@@ -7,6 +7,21 @@ const P = config.pnetConfig;
 
 module.exports = {
     // Phishnet APIv3
+    getSetlistByShowId: async showid => {
+        try {
+            const options = {
+                uri: `https://api.phish.net/v3/setlists/get?apikey=${P.apikey}&showid=${showid}`,
+                headers: {'User-Agent': 'Request-Promise'},
+                json: true
+            };
+            let apiResponse = await rp(options);
+            console.log(`setlistid: ${apiResponse}`);
+            return apiResponse;
+        } catch (err) {
+            console.log("insidecatch");
+            console.log(err);
+        };
+    },
     getVenueByVenueId: async venueid => {
         try {
             const options = {
@@ -17,10 +32,8 @@ module.exports = {
                 json: true
             };
             let apiResponse = await rp(options);
-            console.log(`venuestuff: ${apiResponse}`);
             return apiResponse;
         } catch (err) {
-            console.log("insidecatch");
             console.log(err);
         };
     },
@@ -42,6 +55,24 @@ module.exports = {
             console.log(err);
         };
     },
+    // Phish.in API
+    getMp3ShowInfoByShowDate: async showdate => {
+        try {
+            const options = {
+                uri: `http://phish.in/api/v1/shows/${showdate}`,
+                headers: {
+                    'User-Agent': 'Request-Promise'
+                },
+                json: true
+            };
+            let apiResponse = await rp(options);
+            console.log(`getMp3ShowInfoByShowDateResponse: ${apiResponse}`);
+            return apiResponse;
+        } catch (err) {
+            console.log("insidecatch");
+            console.log(err);
+        };
+    },
     // Google API
     getGeoData: async showString => {
         try {
@@ -53,7 +84,10 @@ module.exports = {
                 json: true
             };
             let apiResponse = await rp(options);
-            if (apiResponse.status == 'ZERO_RESULTS') => console.log(`No results found for: ${showString}`)
+            if (apiResponse.status != 'OK') {
+                console.log(`Error parsing response for "${showString}": ${apiResponse.status}`);
+                return;
+            } 
             return apiResponse;
         } catch (err) {
             console.log("insidecatch");
