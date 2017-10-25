@@ -6,6 +6,13 @@ import NameForm from './name-form';
 import MarkerInfo from './marker-info';
 import ClientApi from './client-api';
 import Parser from 'html-react-parser';
+import PlayerContainer from './player-container';
+import TextField from 'material-ui/textfield';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+const muiTheme = getMuiTheme(baseTheme);
+
 
 const {BaseLayer, Overlay} = LayersControl;
 const venueHack = require('./venue-location-hack');
@@ -77,13 +84,20 @@ export default class PtravelsMap extends Component {
         let venueArray = [];
 
         return (
-            <Map center={position} zoom={this.state.zoom}>
+            <Map center={position} zoom={this.state.zoom} zoomControl={false}>
                 <TileLayer
                     url='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                     attribution='© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     maxZoom={18}/>
                 <Control position="topleft">
-                    <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
+                    <div style={{backgroundColor: "white"}}>
+                    <MuiThemeProvider muiTheme={muiTheme}>
+                        <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
+                    </MuiThemeProvider>
+                    </div>
+                </Control>
+                <Control position="topright">
+                    <PlayerContainer/>
                 </Control>
                 {psi.map((venueAndUserShows, ind) => {
                     // Temporary hack to fix lat/lngs that are null from the Phishin API response

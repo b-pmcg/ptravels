@@ -1,5 +1,7 @@
 /**Input form grabs name from user input and returns to base for api fetch. */
 import React, { Component } from 'react';
+import TextField from 'material-ui/textfield';
+import SearchBar from 'material-ui-search-bar'
 export default class NameForm extends React.Component {
 	constructor(props) {
 	  super(props);
@@ -9,28 +11,28 @@ export default class NameForm extends React.Component {
 	}
   
 	handleChange(event) {
-	  this.setState({value: event.target.value});
+	  this.setState({value: event});
 	}
   
-	handleSubmit(event) {
-	  event.preventDefault();
+	handleSubmit() {
+	//   event.preventDefault();
 	  this.props.callbackFromParent(this.state.value);
 	}
   
 	render() {
 	  return (
-		<form onSubmit={this.handleSubmit}>
-		  <label>
-			Name:
-			<input 
-            type="text" 
-            value={this.state.value} 
-            onChange={this.handleChange}
-            placeholder="Phish.Net username"
-             />
-		  </label>
-		  <input type="submit" value="Submit" />
-		</form>
+          <div>
+            <SearchBar
+                hintText="Search Your Shows"
+                onChange={this.handleChange}
+                onRequestSearch={this.handleSubmit}
+                value={this.state.value}
+                style={{
+                    margin: '0 auto',
+                    maxWidth: 800
+                }}
+            />
+        </div>
 	  );
 	}
   }
