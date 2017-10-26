@@ -1,10 +1,11 @@
 import Leaflet from 'leaflet';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'typeface-roboto'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import PtravelsMap from './ptravels-map';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import PtravelsMap from './ptravels-map';
 const muiTheme = getMuiTheme(baseTheme);
 
 
