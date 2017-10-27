@@ -29,6 +29,10 @@ export default class SetlistComponent extends React.Component {
         this.setState({encore: nextProps.showinfo.tracks.filter(item => item.set == "E")});
       }
 
+    // handleCallback = (mp3Url) => {
+    //     this.props.callback(mp3Url);
+    // }
+
     render() {
         const set1 = this.state.set1;
         const set2 = this.state.set2;
@@ -41,7 +45,7 @@ export default class SetlistComponent extends React.Component {
             {set1.length == 0 ? null : 
             <div><span>Set 1: {set1.map(trackInfo => {
                     return (<span><a href='#' 
-                            onClick={() => this.props.onClickF(trackInfo.mp3)} 
+                            onClick={() => this.props.callback(trackInfo.mp3)} 
                             className='setlist-song'>{trackInfo.title}
                             </a>, </span>)
                     })}
@@ -50,7 +54,7 @@ export default class SetlistComponent extends React.Component {
             {set2.length == 0 ? null : 
             <div><span>Set 2: {set2.map(trackInfo => {
                     return (<span><a href='#' 
-                            onClick={() => this.props.onClickF(trackInfo.mp3)} 
+                            onClick={() => this.props.callback(trackInfo.mp3)} 
                             className='setlist-song'>{trackInfo.title}
                             </a>, </span>)
                     })}
@@ -59,7 +63,7 @@ export default class SetlistComponent extends React.Component {
             {set3.length == 0 ? null : 
             <div><span>Set 3: {set3.map(trackInfo => {
                     return (<span><a href='#' 
-                            onClick={() => this.props.onClickF(trackInfo.mp3)} 
+                            onClick={() => this.props.callback(trackInfo.mp3)} 
                             className='setlist-song'>{trackInfo.title}
                             </a>, </span>)
                     })}
@@ -67,7 +71,7 @@ export default class SetlistComponent extends React.Component {
             {encore.length == 0 ? null : 
             <div><span>E: {encore.map(trackInfo => {
                     return (<span><a href='#' 
-                            onClick={() => this.props.onClickF(trackInfo.mp3)} 
+                            onClick={() => this.props.callback(trackInfo.mp3)} 
                             className='setlist-song'>{trackInfo.title}
                             </a>, </span>)
                     })}

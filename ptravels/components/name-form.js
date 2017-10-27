@@ -1,4 +1,5 @@
-/**Input form grabs name from user input and returns to base for api fetch. */
+/**Parent: ptravels
+ * Input form grabs name from user input and returns to base for api fetch. */
 import React, { Component } from 'react';
 export default class NameForm extends React.Component {
 	constructor(props) {

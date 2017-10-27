@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Map, LayersControl, Marker, Popup, TileLayer, ZoomControl} from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import NameForm from './name-form';
+import PlayerContainer from './player-container';
 import MarkerInfo from './marker-info';
 import ClientApi from './client-api';
 import Parser from 'html-react-parser';
@@ -19,8 +20,14 @@ export default class PtravelsMap extends Component {
             lng: -72.6851,
             zoom: 13,
             phishinShowInfo: [],
-            markers: []
+            markers: [],
+            mp3Url: ""
         }
+    }
+
+    getMp3UrlFromSetlistComponent = (mp3Url) => {
+        console.log(`MP3 URL IS: ${mp3Url}`);
+        this.setState({mp3Url: mp3Url});
     }
 
     getNameValueFromNameForm = async (nameValue) => {
@@ -85,6 +92,9 @@ export default class PtravelsMap extends Component {
                 <Control position="topleft">
                     <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
                 </Control>
+                <Control position="topright">
+                    <PlayerContainer mp3Url={this.state.mp3Url}/>
+                </Control>
                 {psi.map((venueAndUserShows, ind) => {
                     // Temporary hack to fix lat/lngs that are null from the Phishin API response
                     if (venueAndUserShows.venue.latitude == null) {
@@ -95,7 +105,7 @@ export default class PtravelsMap extends Component {
                         
                     return (<Marker key={ind + "-" + key} position={markerPosition}>
                         <Popup>
-                            <MarkerInfo showinfo={venueAndUserShows}/>
+                            <MarkerInfo showinfo={venueAndUserShows} callback={this.getMp3UrlFromSetlistComponent}/>
                         </Popup>
                     </Marker>)
                 })}
