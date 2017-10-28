@@ -56,12 +56,11 @@ export default class MarkerInfo extends React.Component {
         const nextLabel = "Next";
         const numShows = this.props.showinfo.shows.length;
         const grammaticalShow = this.props.showinfo.shows.length == 1 ? "show" : "shows";
-        console.log(selectedShowIndex);
 
         return (<div>
                 <div><span>{this.props.showinfo.venue.name}</span></div>
                 <div><span>{this.props.showinfo.venue.location}</span></div>
-                <SetlistComponent onClickF={this.load} showinfo={theShow} callback={this.props.callback}/>
+                <SetlistComponent showinfo={theShow} callback={this.props.callback}/>
                 <br />
                 <span><i>You have seen {numShows} {grammaticalShow} at {this.props.showinfo.venue.name}</i></span>
                 <br />

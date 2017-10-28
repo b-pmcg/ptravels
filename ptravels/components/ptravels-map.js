@@ -28,6 +28,7 @@ export default class PtravelsMap extends Component {
     getMp3UrlFromSetlistComponent = (mp3Url) => {
         console.log(`MP3 URL IS: ${mp3Url}`);
         this.setState({mp3Url: mp3Url});
+        //send url to player
     }
 
     getNameValueFromNameForm = async (nameValue) => {
@@ -82,6 +83,7 @@ export default class PtravelsMap extends Component {
         let markerPosition = [0,0];
         let showInfo = [];
         let venueArray = [];
+        // put url state here
 
         return (
             <Map center={position} zoom={this.state.zoom}>

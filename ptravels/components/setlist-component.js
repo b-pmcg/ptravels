@@ -22,16 +22,11 @@ export default class SetlistComponent extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.showinfo);
         this.setState({set1: nextProps.showinfo.tracks.filter(item => item.set == "1")});
         this.setState({set2: nextProps.showinfo.tracks.filter(item => item.set == "2")});
         this.setState({set3: nextProps.showinfo.tracks.filter(item => item.set == "3")});
         this.setState({encore: nextProps.showinfo.tracks.filter(item => item.set == "E")});
       }
-
-    // handleCallback = (mp3Url) => {
-    //     this.props.callback(mp3Url);
-    // }
 
     render() {
         const set1 = this.state.set1;

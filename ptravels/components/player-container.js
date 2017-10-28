@@ -13,8 +13,13 @@ export default class PlayerContainer extends React.Component {
         }
     }
 
+    componentWillReceiveProps(url) {
+        console.log(url.mp3Url)
+        this.load(url.mp3Url);
+      }
+
     load = url => { 
-        this.handleUrl(url);
+        this.setState({url: url, played: 0});
     }
 
     handleUrl = url => {
@@ -55,7 +60,7 @@ export default class PlayerContainer extends React.Component {
         return (<div>
                 <ReactPlayer
                     ref={this.ref} 
-                    url={this.props.url}
+                    url={this.state.url}
                     onProgress={this.onProgress}
                     width='25%'
                     height='100%'
