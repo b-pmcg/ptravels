@@ -9,29 +9,26 @@ export default class PlayerContainer extends React.Component {
         super(props);
         this.state = {
             url: "",
-            played: 0
+            played: 0,
+            playing: false
         }
     }
 
     componentWillReceiveProps(url) {
-        console.log(url.mp3Url)
         this.load(url.mp3Url);
       }
 
-    load = url => { 
-        this.setState({url: url, played: 0});
-    }
-
-    handleUrl = url => {
-        this.setState({url: url, played: 0});
+    load = url => {
+        console.log("Url load exec")
+        this.setState({url: url, played: 0, playing: true});
     }
 
     onSeekChange = e => {
         this.setState({ played: parseFloat(e.target.value) });
-      }
+    }
 
     onSeekMouseDown = e => {
-    this.setState({ seeking: true });
+        this.setState({ seeking: true });
     }
 
     onSeekMouseUp = e => {
@@ -46,18 +43,34 @@ export default class PlayerContainer extends React.Component {
         }
     }
 
+    // playPause = () => {
+    //     console.log(this.state.playing)
+    //     this.setState({ playing: !this.state.playing })
+    // }
+
+    stop = () => {
+        this.setState({ url: null, playing: false, played: 0 })
+    }
+
     ref = player => {
         this.player = player;
     }
-    // End ReactPlayerStuff
 
     render() {
-        const {
-            url, playing, volume, muted,
-            played, loaded, duration,
-        } = this.state;
+        let url = this.state.url;
+        let playing = this.state.playing;
+        let played = this.state.played;
+        let isDisabled = playing ? "" : "true";
+        console.log(isDisabled + " " + playing);
+        let style={
+            background: '#FFF',
+            border: '1px solid gray',
+            padding: '1em',
+            display: 'true'
+        }
 
-        return (<div>
+        return (<div
+                style={style}>
                 <ReactPlayer
                     ref={this.ref} 
                     url={this.state.url}
@@ -65,15 +78,23 @@ export default class PlayerContainer extends React.Component {
                     width='25%'
                     height='100%'
                     playing />
-                <div className="slider-wrapper">
+                <div 
+                className="slider-wrapper">
                 <input
-                type='range' min={0} max={1} step='any'
-                size='100'
-                value={played}
-                onMouseDown={this.onSeekMouseDown}
-                onChange={this.onSeekChange}
-                onMouseUp={this.onSeekMouseUp}
+                    type='range' min={0} max={1} step='any'
+                    size='100'
+                    value={played}
+                    onMouseDown={this.onSeekMouseDown}
+                    onChange={this.onSeekChange}
+                    onMouseUp={this.onSeekMouseUp}
                 /></div>
+                <div
+                className="controls-wrapper">
+                <button 
+                    onClick={this.stop}
+                    disabled={isDisabled}
+                >Stop</button>
+                </div>
             </div>);
     }
 }
