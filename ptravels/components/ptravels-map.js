@@ -6,62 +6,54 @@ import NameForm from './name-form';
 import PlayerContainer from './player-container';
 import MarkerInfo from './marker-info';
 import ClientApi from './client-api';
-import Parser from 'html-react-parser';
 
 const {BaseLayer, Overlay} = LayersControl;
 const venueHack = require('./venue-location-hack');
 const api = new ClientApi();
 
 export default class PtravelsMap extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             lat: 41.7637,
             lng: -72.6851,
             zoom: 13,
             phishinShowInfo: [],
-            markers: [],
-            mp3Url: ""
+            mp3Url: "",
+            title: ""
         }
     }
 
-    getMp3UrlFromSetlistComponent = (mp3Url) => {
-        console.log(`MP3 URL IS: ${mp3Url}`);
-        this.setState({mp3Url: mp3Url});
-        //send url to player
-    }
-
+    // Callback handles business logic for searching by username
     getNameValueFromNameForm = async (nameValue) => {
         let showdateArray = [];
-        let phishinShowInfoArray = [];
 
-        // Get a list of shows a user has been to and adds to show date array.
+
+        // Get a list of user's attended shows and adds to showDate array.
         var phishnetUserData = await api.getAllUserDataFromPhishnet(nameValue);
-        for (var i = 0; i < phishnetUserData.length; i++) {
+        phishnetUserData.map(x => {
             // For now, only user artist 1 (Phish)
-            if (phishnetUserData[i].artist == 1){
-                showdateArray.push(phishnetUserData[i].showdate);
-            }
-        }
+            if (x.artist == 1) showdateArray.push(x.showdate);
+        });
         
-        let duplicateVenues = [];
+        let phishinShowInfoArray = [];
         let push = true;
-        // Gets show info for a single show and pushes entire object into array.
+
+        // Get show info for a single show and push the entire object into array.
         for (var i = 0; i < showdateArray.length; i++) {
             try {
+                // The response contains a venue with an array of shows.
                 let phishinShowApiResponse = await api.getInfoForSingleShowFromPhishin(showdateArray[i]);
                 push = true;
                 phishinShowInfoArray.some(x => {
-                    if (x.venueid == phishinShowApiResponse.venueid) {
-                        if (!x.shows.includes(phishinShowApiResponse.shows[0])){
+                    // Check if the venueid already exists, but also the shows array does not contain the show.
+                    if (x.venueid == phishinShowApiResponse.venueid && !x.shows.includes(phishinShowApiResponse.shows[0])) {
                             x.shows.push(phishinShowApiResponse.shows[0])
+                            // Set push to false so we don't push the show again.
                             push = false
-                        }
                     }
                 })
-                if (push != false){
-                    phishinShowInfoArray.push(phishinShowApiResponse);
-                }
+                if (push != false) phishinShowInfoArray.push(phishinShowApiResponse);
             } catch(err) {
                 console.log(err);
             }   
@@ -76,14 +68,13 @@ export default class PtravelsMap extends Component {
         this.setState({phishinShowInfo: phishinShowInfoArray});
     }
 
+    getTrackInfoFromSetlistComponent = (trackinfo) => {
+        this.setState({mp3Url: trackinfo.mp3, title: trackinfo.title});
+    }
+
     render() {
         const position = [this.state.lat, this.state.lng];
         const psi = this.state.phishinShowInfo;
-        let key = 0;
-        let markerPosition = [0,0];
-        let showInfo = [];
-        let venueArray = [];
-        // put url state here
 
         return (
             <Map center={position} zoom={this.state.zoom}>
@@ -92,22 +83,18 @@ export default class PtravelsMap extends Component {
                     attribution='© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     maxZoom={18}/>
                 <Control position="topleft">
-                    <NameForm callbackFromParent={this.getNameValueFromNameForm}/>
+                    <NameForm callback={this.getNameValueFromNameForm}/>
                 </Control>
                 <Control position="topright">
-                    <PlayerContainer mp3Url={this.state.mp3Url}/>
+                    <PlayerContainer mp3Url={this.state.mp3Url} title={this.state.title}/>
                 </Control>
-                {psi.map((venueAndUserShows, ind) => {
+                {psi.map((venueAndUserShows, i) => {
                     // Temporary hack to fix lat/lngs that are null from the Phishin API response
-                    if (venueAndUserShows.venue.latitude == null) {
-                        venueHack.setMissingLocationData(venueAndUserShows);
-                    }
-                    key = ind
-                    markerPosition = [venueAndUserShows.venue.latitude, venueAndUserShows.venue.longitude];
+                    if (venueAndUserShows.venue.latitude == null) venueHack.setMissingLocationData(venueAndUserShows);
                         
-                    return (<Marker key={ind + "-" + key} position={markerPosition}>
+                    return (<Marker key={i} position={[venueAndUserShows.venue.latitude, venueAndUserShows.venue.longitude]}>
                         <Popup>
-                            <MarkerInfo showinfo={venueAndUserShows} callback={this.getMp3UrlFromSetlistComponent}/>
+                            <MarkerInfo showinfo={venueAndUserShows} callback={this.getTrackInfoFromSetlistComponent}/>
                         </Popup>
                     </Marker>)
                 })}

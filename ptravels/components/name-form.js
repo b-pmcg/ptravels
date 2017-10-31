@@ -2,9 +2,11 @@
  * Input form grabs name from user input and returns to base for api fetch. */
 import React, { Component } from 'react';
 export default class NameForm extends React.Component {
-	constructor(props) {
-	  super(props);
-	  this.state = {value: ''};
+	constructor() {
+	  super();
+	  this.state = {
+          value: ''
+        };
 	  this.handleChange = this.handleChange.bind(this);
 	  this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -15,7 +17,7 @@ export default class NameForm extends React.Component {
   
 	handleSubmit(event) {
 	  event.preventDefault();
-	  this.props.callbackFromParent(this.state.value);
+	  this.props.callback(this.state.value);
 	}
   
 	render() {

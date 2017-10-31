@@ -1,19 +1,16 @@
 /**Parent: ptravels
- * Children: setlist-component
- * Renders all the popup data per show, plus pass thru for react player url state */
+ * Children: setlist-component, next-show-button
+ * Renders all the popup data per show, including buttons
+ * plus pass thru for react player url state */
 import React, { Component } from 'react';
-import ReactPlayer from 'react-player'
 import SetlistComponent from './setlist-component';
-import NextShowButton from './reuseable-components/next-show-button.js'
+import NextShowButton from './reuseable-components/next-show-button.js';
+
 export default class MarkerInfo extends React.Component {
     constructor(props){
         super(props);
-        console.log(this.props.showinfo);
         this.state = {
             url: "",
-            played: 0,
-            set1: [],
-            set2: [],
             currentlyDisplayedShowIndex: 1,
             theShow: this.props.showinfo.shows[0],
             maxIndex: this.props.showinfo.shows.length - 1,
@@ -21,14 +18,13 @@ export default class MarkerInfo extends React.Component {
             nextButtonIsDisabled: ""
         }
     }
+
     componentWillMount = () => {
         if (this.props.showinfo.shows.length <= 1) {
             this.setState({nextButtonIsDisabled: true});
         }
     }
     
-
-    // Toggle Show Stuff
     toggleShowPrev = () => {
         let newIndex = this.state.currentlyDisplayedShowIndex > 0 ? this.state.currentlyDisplayedShowIndex - 1 : 0;
         console.log(`Previous: Max index: ${this.state.maxIndex}. Array length: ${this.props.showinfo.shows.length}. New index: ${newIndex}`);
@@ -39,7 +35,6 @@ export default class MarkerInfo extends React.Component {
       }
 
     toggleShowNext = () => {
-        //TODO: disable button thing "kinda" working, need to fix:
         let newIndex = this.state.currentlyDisplayedShowIndex < this.state.maxIndex ? this.state.currentlyDisplayedShowIndex + 1 : this.state.maxIndex;
         console.log(`Next: Max index: ${this.state.maxIndex}. Array length: ${this.props.showinfo.shows.length}. New index: ${newIndex}`);
         let theShow = this.props.showinfo.shows[newIndex];
@@ -49,7 +44,6 @@ export default class MarkerInfo extends React.Component {
       }
 
     render() {
-
         let selectedShowIndex = this.state.currentlyDisplayedShowIndex;
         let theShow = this.state.theShow;
         const prevLabel = "Previous";
@@ -74,8 +68,7 @@ export default class MarkerInfo extends React.Component {
                     onClick={this.toggleShowNext}
                     className="btn btn-default"
                     disabled={this.state.nextButtonIsDisabled}
-                    >{nextLabel}
-                    
+                    >{nextLabel}    
                 </button>
             </div>);
     }

@@ -1,10 +1,11 @@
 /**Parent: marker-info
+ * Displays all the setlist information 
  */
 import React, { Component } from 'react';
-import SetlistSongComponent from './setlist-song-component';
+
 export default class SetlistComponent extends React.Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state = {
             url: "",
             set1: [],
@@ -38,36 +39,40 @@ export default class SetlistComponent extends React.Component {
             <div><span>{this.props.showinfo.date}</span></div>
             <br />
             {set1.length == 0 ? null : 
-            <div><span>Set 1: {set1.map(trackInfo => {
-                    return (<span><a href='#' 
-                            onClick={() => this.props.callback(trackInfo.mp3)} 
-                            className='setlist-song'>{trackInfo.title}
+            <div><span>Set 1: {set1.map((trackInfo, i) => {
+                    return (<span key={i}><a href='#' 
+                            onClick={() => this.props.callback(trackInfo)} 
+                            className='setlist-song'
+                            >{trackInfo.title}
                             </a>, </span>)
                     })}
             </span></div>}
             <br />
             {set2.length == 0 ? null : 
-            <div><span>Set 2: {set2.map(trackInfo => {
-                    return (<span><a href='#' 
-                            onClick={() => this.props.callback(trackInfo.mp3)} 
-                            className='setlist-song'>{trackInfo.title}
+            <div><span>Set 2: {set2.map((trackInfo, i) => {
+                    return (<span key={i}><a href='#' 
+                            onClick={() => this.props.callback(trackInfo)} 
+                            className='setlist-song'
+                            >{trackInfo.title}
                             </a>, </span>)
                     })}
             </span></div>}
             <br />
             {set3.length == 0 ? null : 
-            <div><span>Set 3: {set3.map(trackInfo => {
-                    return (<span><a href='#' 
-                            onClick={() => this.props.callback(trackInfo.mp3)} 
-                            className='setlist-song'>{trackInfo.title}
+            <div><span>Set 3: {set3.map((trackInfo, i) => {
+                    return (<span key={i}><a href='#' 
+                            onClick={() => this.props.callback(trackInfo)} 
+                            className='setlist-song'
+                            >{trackInfo.title}
                             </a>, </span>)
                     })}
             </span></div>}
             {encore.length == 0 ? null : 
-            <div><span>E: {encore.map(trackInfo => {
-                    return (<span><a href='#' 
-                            onClick={() => this.props.callback(trackInfo.mp3)} 
-                            className='setlist-song'>{trackInfo.title}
+            <div><span>E: {encore.map((trackInfo, i) => {
+                    return (<span key={i}><a href='#' 
+                            onClick={() => this.props.callback(trackInfo)} 
+                            className='setlist-song'
+                            >{trackInfo.title}
                             </a>, </span>)
                     })}
             </span></div>}

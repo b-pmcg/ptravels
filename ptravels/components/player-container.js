@@ -1,12 +1,11 @@
-/**Parent: ptravels
- * Children: 
+/**Parent: ptravels 
  * A container for the react audio player */
 import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
 
 export default class PlayerContainer extends React.Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state = {
             url: "",
             played: 0,
@@ -16,10 +15,9 @@ export default class PlayerContainer extends React.Component {
 
     componentWillReceiveProps(url) {
         this.load(url.mp3Url);
-      }
+    }
 
     load = url => {
-        console.log("Url load exec")
         this.setState({url: url, played: 0, playing: true});
     }
 
@@ -43,10 +41,10 @@ export default class PlayerContainer extends React.Component {
         }
     }
 
-    // playPause = () => {
-    //     console.log(this.state.playing)
-    //     this.setState({ playing: !this.state.playing })
-    // }
+    playPause = () => {
+        console.log(this.state.playing)
+        //this.setState({ playing: !this.state.playing })
+    }
 
     stop = () => {
         this.setState({ url: null, playing: false, played: 0 })
@@ -61,16 +59,15 @@ export default class PlayerContainer extends React.Component {
         let playing = this.state.playing;
         let played = this.state.played;
         let isDisabled = playing ? "" : "true";
-        console.log(isDisabled + " " + playing);
         let style={
             background: '#FFF',
-            border: '1px solid gray',
+            border: '.25px solid lightgray',
             padding: '1em',
             display: 'true'
         }
 
-        return (<div
-                style={style}>
+        return (<div style={style}>
+                <span>{this.props.title}</span>
                 <ReactPlayer
                     ref={this.ref} 
                     url={this.state.url}
