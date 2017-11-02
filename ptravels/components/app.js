@@ -9,7 +9,6 @@ Leaflet.Icon.Default.imagePath =
 
 const App = () => (
   <div>
-    <h2>Panes</h2>
     <PtravelsMap />
   </div>
 )

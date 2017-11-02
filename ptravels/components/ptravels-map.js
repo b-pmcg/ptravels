@@ -25,15 +25,13 @@ export default class PtravelsMap extends Component {
     }
 
     // Callback handles business logic for searching by username
-    getNameValueFromNameForm = async (nameValue) => {
-        let showdateArray = [];
-
+    getNameValueFromNameForm = async nameValue => {
 
         // Get a list of user's attended shows and adds to showDate array.
         var phishnetUserData = await api.getAllUserDataFromPhishnet(nameValue);
-        phishnetUserData.map(x => {
+        var showdateArray = phishnetUserData.map(x => {
             // For now, only user artist 1 (Phish)
-            if (x.artist == 1) showdateArray.push(x.showdate);
+            if (x.artist == 1) return x.showdate;
         });
         
         let phishinShowInfoArray = [];
@@ -68,7 +66,7 @@ export default class PtravelsMap extends Component {
         this.setState({phishinShowInfo: phishinShowInfoArray});
     }
 
-    getTrackInfoFromSetlistComponent = (trackinfo) => {
+    getTrackInfoFromSetlistComponent = trackinfo => {
         this.setState({mp3Url: trackinfo.mp3, title: trackinfo.title});
     }
 

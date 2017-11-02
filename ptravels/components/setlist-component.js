@@ -76,6 +76,6 @@ export default class SetlistComponent extends React.Component {
                             </a>, </span>)
                     })}
             </span></div>}
-            </div>);
+            </div>)
     }
 }
