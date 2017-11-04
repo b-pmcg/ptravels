@@ -15,9 +15,9 @@ export default class PtravelsMap extends Component {
     constructor() {
         super();
         this.state = {
-            lat: 41.7637,
-            lng: -72.6851,
-            zoom: 13,
+            lat: 28.9808985,
+            lng: -96.7783533,
+            zoom: 5,
             phishinShowInfo: [],
             mp3Url: "",
             title: ""
