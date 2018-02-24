@@ -18,10 +18,10 @@
         "flow": "flow check",
         "test": "npm run lint && npm run flow && npm run jest",
         "start": "npm run test && npm run build",
-        "server": "node ptravels/server.js",
+        "server": "node src/server.js",
         "prepublishOnly": "npm run build",
         "examples": "webpack-dev-server --config ./example/webpack.config.babel.js --progress",
-        "ptravels": "node ptravels/server --config ./ptravels/webpack.config.babel.js --progress"
+        "dev": "node src/server --config ./src/webpack.config.babel.js --progress"
     },
     "repository": {
         "type": "git",

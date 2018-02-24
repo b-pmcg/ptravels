@@ -27,7 +27,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: './src/index.html',
+            template: './index.html', //changed from /.src/index.html but broke npm run dev
             title: 'Your website'
           }),
         new webpack.LoaderOptionsPlugin({
