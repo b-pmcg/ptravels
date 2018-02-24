@@ -40,10 +40,10 @@ function queryComposer(name, value) {
 const queryToPass = [];
 
 // Webpack (dev only)
-// app.use(webpackDevMiddleware(compiler, {
-//     publicPath: config.output.publicPath,
-//     stats: { colors: true }
-// }));
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    stats: { colors: true }
+}));
 
 app.listen(port, () => {
     console.log(`Express server running on port: ${port}`);
