@@ -22,7 +22,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: '[name].js',
-        publicPath: '/', //this is basically the webroot
+        publicPath: '/src', //this is basically the webroot
     },
     plugins: [
         new HtmlWebpackPlugin({
