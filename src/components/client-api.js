@@ -1,5 +1,8 @@
 const utilities = require('../utilities');
 const rp = require('request-promise');
+const localHost = 'http://localhost:3000/';
+const webServer = 'http://http://159.65.75.193/';
+const server = localHost;
 /*This is supposed to be the workhorse to keep ptravels-map clean*/
 
 export default class ClientApi {
@@ -9,7 +12,7 @@ export default class ClientApi {
     getAllUserDataFromPhishnet = async(username) => {
         try {
             const options = {
-                uri: `http://localhost:3000/usershows/${username}`,
+                uri: `${server}usershows/${username}`,
                 headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
@@ -25,7 +28,7 @@ export default class ClientApi {
         /* Super messy, but finally works. */
         try {
             const options = {
-                uri: `http://localhost:3000/usershows/${username}`,
+                uri: `${server}usershows/${username}`,
                 headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
@@ -37,7 +40,7 @@ export default class ClientApi {
             let showid = utilities.getShowIdForLatest(apiResponse);
 
             const options2 = {
-                uri: `http://localhost:3000/geodata/${showString}`,
+                uri: `${server}geodata/${showString}`,
                 headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
@@ -56,7 +59,7 @@ export default class ClientApi {
         let returnArray = [];
         try {
             const options = {
-                uri: `http://localhost:3000/usershows/${username}`,
+                uri: `${server}usershows/${username}`,
                 headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
@@ -73,7 +76,7 @@ export default class ClientApi {
                 showidCoordsCombo.showid.push(showid);
 
                 const options2 = {
-                    uri: `http://localhost:3000/geodata/${showString}`,
+                    uri: `${server}geodata/${showString}`,
                     headers: {'User-Agent': 'Request-Promise'},
                     json: true
                 };
@@ -94,7 +97,7 @@ export default class ClientApi {
         try {
             console.log("I'm client API, showId is : " + showid)
             const options = {
-                uri: `http://localhost:3000/setlistinfo/${showid}`,
+                uri: `${server}setlistinfo/${showid}`,
                 headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
@@ -108,7 +111,7 @@ export default class ClientApi {
     getInfoForSingleShowFromPhishin = async showdate => {
         try {
             const options = {
-                uri: `http://localhost:3000/phishin/shows/${showdate}`,
+                uri: `${server}phishin/shows/${showdate}`,
                 headers: {'User-Agent': 'Request-Promise'},
                 json: true
             };
