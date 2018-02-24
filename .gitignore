@@ -6,3 +6,5 @@ es
 lib
 
 .DS_Store
+
+ptravels/config.js
