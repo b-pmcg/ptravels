@@ -16,7 +16,8 @@ const Router = require('router');
 const headerSettings = {
     'Content-Type': 'application/json; charset=utf-8',
     'Accept': '*/*',
-    'Access-Control-Allow-Origin': 'http://localhost:3000' //was 3001?
+    'Access-Control-Allow-Origin': 'http://159.65.75.193/' //was 3001?
+    
 }
 
 const creds = require('./config');
