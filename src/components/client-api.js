@@ -3,7 +3,7 @@ const rp = require('request-promise');
 const localHost = 'http://localhost:3000/';
 const webServer = 'http://159.65.75.193/';
 const rootServer = '/';
-const server = webServer;
+const server = localHost;
 /*This is supposed to be the workhorse to keep ptravels-map clean*/
 
 export default class ClientApi {
