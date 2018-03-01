@@ -18,6 +18,7 @@ const headerSettings = {
     'Accept': '*/*',
     'Access-Control-Allow-Origin': 'http://159.65.75.193/', //was 3001?
     'Access-Control-Allow-Origin': 'http://phluffstravels.com',
+    'Access-Control-Allow-Origin': 'http://www.phluffstravels.com',
 }
 
 const creds = require('./config');
