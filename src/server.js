@@ -17,8 +17,9 @@ const headerSettings = {
     'Content-Type': 'application/json; charset=utf-8',
     'Accept': '*/*',
     'Access-Control-Allow-Origin': 'http://159.65.75.193/', //was 3001?
-    // 'Access-Control-Allow-Origin': 'http://phluffstravels.com',
-    // 'Access-Control-Allow-Origin': 'http://www.phluffstravels.com',
+    'Access-Control-Allow-Origin': 'http://phluffstravels.com',
+    'Access-Control-Allow-Origin': 'http://www.phluffstravels.com',
+    'Access-Control-Allow-Origin': 'https://159.65.75.193/',
     'Access-Control-Allow-Origin': 'https://phluffstravels.com',
     'Access-Control-Allow-Origin': 'https://www.phluffstravels.com',
 }
