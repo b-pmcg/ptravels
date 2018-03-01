@@ -1,7 +1,7 @@
 const utilities = require('../utilities');
 const rp = require('request-promise');
-const localHost = 'http://localhost:3000/';
-const webServer = 'http://159.65.75.193/';
+const localHost = 'https://localhost:3000/';
+const webServer = 'https://159.65.75.193/';
 const rootServer = '/';
 const server = webServer;
 /*This is supposed to be the workhorse to keep ptravels-map clean*/
