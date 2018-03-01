@@ -3,7 +3,7 @@
 const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
+// const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const app = express();
 const config = require('./webpack.config.babel.js');
@@ -18,6 +18,7 @@ const headerSettings = {
     'Accept': '*/*',
     'Access-Control-Allow-Origin': 'http://159.65.75.193/', //was 3001?
     'Access-Control-Allow-Origin': 'http://phluffstravels.com',
+    'Access-Control-Allow-Origin': 'http://www.phluffstravels.com',
 }
 
 const creds = require('./config');
