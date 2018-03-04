@@ -1,10 +1,15 @@
+# the usual
 node_modules
 coverage
 
+# build files
 dist
 es
 lib
 
+# os/env specific
+/.vscode
 .DS_Store
 
+# api key
 ptravels/config.js
