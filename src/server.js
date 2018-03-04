@@ -26,7 +26,7 @@ const M = creds.pnetConfig.methods;
 const gateway = require('./gateway');
 const utilities = require('./utilities');
 
-// Dummy data:
+// Query composer, a WIP:
 let container;
 const venueid = 100;
 let showid = 1253142331;
@@ -95,32 +95,3 @@ app.get('/geodata/:showstring', async(req, res) => {
     res.write(JSON.stringify(geoData));
     res.end();
 })
-
-
-
-/*Unused right now */
-// app.get('/venueshows/:venue', async(req, res) => {
-//     res.set(headerSettings);
-//     let venueName = req.params.venue;
-//     let allVenueShows = gateway.getVenueByVenueId(venueName);
-//     // get shows by venueid
-//     res.write(JSON.stringify(coords));
-//     res.end();
-// })
-
-//END ROUTES
-
-//gateway.makeRequest(M.getPeopleByShowId, queryToPass);
-
-// looks like old request still works!
-//gateway.oldRequest("destiny_unhinged");
-
-/**Think about the factories, before the industrial revolution. Only the skilled, specialized
- * workers could operate the machinery, be part of the team by crafting componentry
- * with complex equipment.
- * 
- * Later, the industrial revolution would become synonymous with the turning point
- * of american work culture, becoming far more automated, only being operated by the
- * worker class. Today's programming culture is mirroring that with the increase in
- * programming-training, bootcamps, etc.
-*/
