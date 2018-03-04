@@ -1,5 +1,5 @@
 {
-    "name": "Phluffstravels",
+    "name": "phluffstravels",
     "version": "0.1.0",
     "description": "Geolocation app to visualize your attended shows.",
     "main": "lib/index.js",
