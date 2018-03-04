@@ -12,4 +12,4 @@ lib
 .DS_Store
 
 # api key
-ptravels/config.js
+src/config.js
