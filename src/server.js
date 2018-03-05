@@ -8,7 +8,9 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const app = express();
 const config = require('./webpack.config.babel.js');
 const compiler = webpack(config);
-const port = 3000;
+const devPort = 3003;
+const prodPort = 3000;
+const port = devPort;
 
 const http = require('http');
 const finalhandler = require('finalhandler');
