@@ -2,8 +2,9 @@ const utilities = require('../utilities');
 const rp = require('request-promise');
 const localHost = 'https://localhost:3000/';
 const webServer = 'https://phluffstravels.com/';
+const devServer= 'http://philbain.com/';
 const rootServer = '/';
-const server = webServer;
+const server = devServer;
 /*This is supposed to be the workhorse to keep ptravels-map clean*/
 
 export default class ClientApi {
