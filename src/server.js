@@ -8,7 +8,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const app = express();
 const config = require('./webpack.config.babel.js');
 const compiler = webpack(config);
-const port = 3000;
+const port = 3003;
 
 const http = require('http');
 const finalhandler = require('finalhandler');
@@ -19,9 +19,10 @@ const headerSettings = {
     'Access-Control-Allow-Origin': 'http://159.65.75.193/', //was 3001?
     'Access-Control-Allow-Origin': 'http://phluffstravels.com',
     'Access-Control-Allow-Origin': 'http://www.phluffstravels.com',
+    'Access-Control-Allow-Origin': 'http://www.philbain.com',
 }
 
-const creds = require('./config');
+const creds = require('./config');se
 const M = creds.pnetConfig.methods;
 const gateway = require('./gateway');
 const utilities = require('./utilities');
