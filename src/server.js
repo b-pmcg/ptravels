@@ -22,7 +22,7 @@ const headerSettings = {
     'Access-Control-Allow-Origin': 'http://www.philbain.com',
 }
 
-const creds = require('./config');se
+const creds = require('./config');
 const M = creds.pnetConfig.methods;
 const gateway = require('./gateway');
 const utilities = require('./utilities');
