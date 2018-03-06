@@ -22,7 +22,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: '[name].js',
-        publicPath: '/ptravels-dev', //this is basically the webroot
+        publicPath: '/ptravels-dev/', //this is basically the webroot
     },
     plugins: [
         new HtmlWebpackPlugin({
