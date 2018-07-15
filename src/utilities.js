@@ -26,7 +26,6 @@ module.exports = {
         return showid;
     },
     getCoordsFromGeoData: googleGeoResponse => {
-        //console.log(googleGeoResponse.results[0]);
         let coordinates = {
             lat: googleGeoResponse.results[0].geometry.location.lat,
             lng: googleGeoResponse.results[0].geometry.location.lng

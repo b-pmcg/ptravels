@@ -7,5 +7,4 @@
 
 ## TODOs
 * handle other artists (i.e. Trey/Mike solo)
-* fix br issue with invisilbe set 3
 * include redux
